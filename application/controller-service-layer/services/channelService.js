@@ -52,7 +52,8 @@ channelService.prototype.createChannel = function(channelName, channelConfigPath
 	var channel = helper.getChannelForOrg(orgName);
 
 	// read in the envelope for the channel config raw bytes
-	var envelope = fs.readFileSync(path.join(__dirname, channelConfigPath));
+	var envelope = fs.readFileSync(path.join(__dirname, '../', channelConfigPath));
+	
 	// extract the channel config bytes from the envelope to be signed
 	var channelConfig = client.extractChannelConfig(envelope);
 

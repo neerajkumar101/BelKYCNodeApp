@@ -14,6 +14,14 @@ module.exports = function(app) {
 		}],
 		
 		"/api/v1/channels": [{
+			method: "GET",
+			action: app.controllers.queryController.queryChannels,
+			middleware: [],
+			views: {
+				json: views.jsonView
+			}
+		},
+		{
 			method: "POST",
 			action: app.controllers.channelController.createChannel,
 			middleware: [],
@@ -32,6 +40,14 @@ module.exports = function(app) {
 		}],
 		
 		"/api/v1/chaincodes": [{
+			method: "GET",
+			action: app.controllers.queryController.queryInstalledChaincodes,
+			middleware: [],
+			views: {
+				json: views.jsonView
+			}
+		},
+		{
 			method: "POST",
 			action: app.controllers.chaincodeController.installChaincode,
 			middleware: [],
@@ -56,9 +72,8 @@ module.exports = function(app) {
 			views: {
 				json: views.jsonView
 			}
-		}],
-		
-		"/api/v1/channels/:channelName/chaincodes/:chaincodeName": [{
+		},
+		{
 			method: "GET",
 			action: app.controllers.queryController.queryChaincode,
 			middleware: [],
@@ -103,24 +118,5 @@ module.exports = function(app) {
 			}
 		}],
 		
-		"/api/v1/chaincodes": [{
-			method: "GET",
-			action: app.controllers.queryController.queryInstalledChaincodes,
-			middleware: [],
-			views: {
-				json: views.jsonView
-			}
-		}],
-		
-		"/api/v1/channels": [{
-			method: "GET",
-			action: app.controllers.queryController.queryChannels,
-			middleware: [],
-			views: {
-				json: views.jsonView
-			}
-		}],
-
-
 	};
 };

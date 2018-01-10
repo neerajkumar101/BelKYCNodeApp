@@ -25,7 +25,6 @@ global.domain = require('./configurations/DomainInclude.js');
 
 //=================================================================================================
 
-'use strict';
 var log4js = require('log4js');
 var logger = log4js.getLogger('SampleWebApp');
 // var express = require('express');
@@ -69,8 +68,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: false
 }));
-
-
 
 
 //================================================================================================
@@ -132,8 +129,8 @@ function getErrorMessage(field) {
 }
 
 
-Layers = require('./application-utilities/layers').Express;
-var wiring = require('./configurations/UrlMapping');
+global.Layers = require('./application-utilities/layers').Express;
+global.wiring = require('./configurations/UrlMapping');
 new Layers(app, router, __dirname + '/application/controller-service-layer', wiring);
 
 configurationHolder.Bootstrap.initApp();

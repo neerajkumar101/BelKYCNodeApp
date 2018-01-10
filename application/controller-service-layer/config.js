@@ -11,6 +11,6 @@ else
 	file = util.format(file, '');
 
 // hfc.addConfigFile(path.join(__dirname, 'app', file));
-hfc.addConfigFile(path.join(__dirname, 'controller-service-layer', file));
+hfc.addConfigFile(path.join(__dirname, '/services/', file));
 
-hfc.addConfigFile(path.join(__dirname, 'config.json'));
+hfc.addConfigFile(path.join(__dirname, '/config.json'));

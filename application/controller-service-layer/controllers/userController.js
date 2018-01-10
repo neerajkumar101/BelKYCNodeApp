@@ -37,7 +37,6 @@ module.exports = function() {
             }
         });
 
-        this.services.userService.fetchData(res, callback);
     }
 
 

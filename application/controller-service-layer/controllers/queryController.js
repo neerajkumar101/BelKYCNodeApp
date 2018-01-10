@@ -62,7 +62,7 @@ module.exports = function() {
             return;
         }
     
-        this.services.queryService.getBlockByNumber(peer, blockId, username, orgname)
+        this.services.queryService.queryBlockByNumber(peer, blockId, username, orgname)
             .then(function(message) {
                 res.send(message);
             });
@@ -85,7 +85,7 @@ module.exports = function() {
             return;
         }
     
-        this.services.queryService.getTransactionByID(peer, trxnId, username, orgname)
+        this.services.queryService.queryTransactionByID(peer, trxnId, username, orgname)
             .then(function(message) {
                 res.send(message);
             });
@@ -106,7 +106,7 @@ module.exports = function() {
             return;
         }
     
-        this.services.queryService.getBlockByHash(peer, hash, username, orgname).then(
+        this.services.queryService.queryBlockByHash(peer, hash, username, orgname).then(
             function(message) {
                 res.send(message);
             });
@@ -134,8 +134,8 @@ module.exports = function() {
         
         var peer = req.query.peer;
         var installType = req.query.type;
-        var username = req.body.username;
-        var orgname = req.body.orgname;
+        var username = req.user.username;
+        var orgname = req.user.orgName;
 
         //TODO: add Constnats
         if (installType === 'installed') {
@@ -146,7 +146,7 @@ module.exports = function() {
                 '================ GET INSTANTIATED CHAINCODES ======================');
         }
     
-        this.services.queryService.getInstalledChaincodes(peer, installType, username, orgname)
+        this.services.queryService.queryInstalledChaincodes(peer, installType, username, orgname)
         .then(function(message) {
             res.send(message);
         });
@@ -158,15 +158,15 @@ module.exports = function() {
         logger.debug('================ GET CHANNELS ======================');
         logger.debug('peer: ' + req.query.peer);
         var peer = req.query.peer;
-        var username = req.body.username;
-        var orgname = req.body.orgname;
+        var username = req.user.username;
+        var orgname = req.user.orgName;
 
         if (!peer) {
             res.json(getErrorMessage('\'peer\''));
             return;
         }
     
-        this.services.queryService.getChannels(peer, username, orgname)
+        this.services.queryService.queryChannels(peer, username, orgname)
         .then(function(
             message) {
             res.send(message);

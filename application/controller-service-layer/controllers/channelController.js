@@ -31,7 +31,7 @@ module.exports = function() {
 
         callback(null, "allset");
 
-    }
+    };
 
     var joinChannel = function(req, res, callback) {
         
@@ -62,7 +62,7 @@ module.exports = function() {
 
         callback(null, "allset");
 
-    }
+    };
 
     return {
         createChannel: createChannel,
