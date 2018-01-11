@@ -41,7 +41,7 @@ module.exports = function() {
             res.send(message);
         });
 
-        callback(null, "allset");
+        // callback(null, "allset");
 
         
     }
@@ -87,7 +87,7 @@ module.exports = function() {
         });
 
 
-        callback(null, "allset");    
+        // callback(null, "allset");    
 
     }
 
@@ -137,7 +137,7 @@ module.exports = function() {
             res.send("success");
         });
 
-        callback(null, "allset");
+        // callback(null, "allset");
     
     }
 

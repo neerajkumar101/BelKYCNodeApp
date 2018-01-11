@@ -29,7 +29,7 @@ module.exports = function() {
             res.send(message);
         });
 
-        callback(null, "allset");
+        // callback(null, "allset");
 
     };
 
@@ -60,7 +60,7 @@ module.exports = function() {
             res.send(message);
         });
 
-        callback(null, "allset");
+        //callback(null, "allset");
 
     };
 

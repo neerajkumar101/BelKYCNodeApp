@@ -33,7 +33,7 @@ chaincodeService.prototype.installChaincode = function(peers, chaincodeName, cha
     return helper.getOrgAdmin(org).then((user) => {
         var request = {
             targets: helper.newPeers(peers, org),
-            chaincodePath: chaincodePath,
+            chaincodePath: path.join('../..', chaincodePath),
             chaincodeId: chaincodeName,
             chaincodeVersion: chaincodeVersion
         };
@@ -209,6 +209,7 @@ chaincodeService.prototype.instantiateChaincode = function(channelName, chaincod
     }, (err) => {
         logger.error('Failed to send instantiate due to error: ' + err.stack ? err
             .stack : err);
+        
         return 'Failed to send instantiate due to error: ' + err.stack ? err.stack :
             err;
     });
