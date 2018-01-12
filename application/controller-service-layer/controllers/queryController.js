@@ -10,8 +10,8 @@ module.exports = function() {
         let args = req.query.args;
         let fcn = req.query.fcn;
         let peer = req.query.peer;
-        var username = req.body.username;
-        var orgname = req.body.orgname;
+        var username = req.user.username;
+        var orgname = req.user.orgName;
     
         logger.debug('channelName : ' + channelName);
         logger.debug('chaincodeName : ' + chaincodeName);
@@ -46,8 +46,8 @@ module.exports = function() {
 
     var queryBlockByNumber = function(req, res, callback) {
 
-        var username = req.body.username;
-        var orgname = req.body.orgname;
+        var username = req.user.username;
+        var orgname = req.user.orgName;
 
         logger.debug('==================== GET BLOCK BY NUMBER ==================');
 
@@ -77,8 +77,8 @@ module.exports = function() {
         logger.debug('channelName : ' + req.params.channelName);
         let trxnId = req.params.trxnId;
         let peer = req.query.peer;
-        var username = req.body.username;
-        var orgname = req.body.orgname;
+        var username = req.user.username;
+        var orgname = req.user.orgName;
 
         if (!trxnId) {
             res.json(getErrorMessage('\'trxnId\''));
@@ -98,8 +98,8 @@ module.exports = function() {
         logger.debug('channelName : ' + req.params.channelName);
         let hash = req.query.hash;
         let peer = req.query.peer;
-        var username = req.body.username;
-        var orgname = req.body.orgname;
+        var username = req.user.username;
+        var orgname = req.user.orgName;
 
         if (!hash) {
             res.json(getErrorMessage('\'hash\''));
@@ -120,8 +120,8 @@ module.exports = function() {
             '================ GET CHANNEL INFORMATION ======================');
         logger.debug('channelName : ' + req.params.channelName);
         let peer = req.query.peer;
-        var username = req.body.username;
-        var orgname = req.body.orgname;
+        var username = req.user.username;
+        var orgname = req.user.orgName;
     
         this.services.queryService.queryChainInfo(peer, username, orgname).then(
             function(message) {

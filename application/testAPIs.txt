@@ -66,7 +66,7 @@ curl -s -X POST \
   -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTU2MDM3MjYsInVzZXJuYW1lIjoibmVlcmFqIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE1MTU1Njc3MjZ9.8H1or9VnG30zMtcjbN7BH9dDB7va06TzkitkXeHT4v4" \
   -H "content-type: application/json" \
   -d '{
-	"peers": ["peer1"]
+	"peers": ["peer1", peer2"]
 }'
 
 echo
@@ -145,13 +145,9 @@ echo
 echo "GET query chaincode on peer1 of Org1"
 echo
 curl -s -X GET \
-  "http://localhost:4000/channels/mychannel/chaincodes/mycc?peer=peer1" \
+  "http://localhost:4000/channels/mychannel/chaincodes/mycc?peer=peer1&fcn=read&args=["o001"]" \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json"
-  -d '{
-	"fcn":"read",
-	"args":["o001"]
-}'
 echo
 echo
 

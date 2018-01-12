@@ -5,7 +5,6 @@ console.log("cors is already running")
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var multipart = require('connect-multiparty');
-
 global.crypto = require('crypto');
 global.multipartMiddleware = multipart();
 global.app = module.exports = express();
@@ -23,35 +22,20 @@ global.mongooseSchema = mongoose.Schema;
 global.configurationHolder = require('./configurations/DependencyInclude.js');
 global.domain = require('./configurations/DomainInclude.js');
 
-//=================================================================================================
-
 var log4js = require('log4js');
 var logger = log4js.getLogger('SampleWebApp');
-// var express = require('express');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
-// var bodyParser = require('body-parser');
 var http = require('http');
 var util = require('util');
-// var app = express();
 var expressJWT = require('express-jwt');
 var jwt = require('jsonwebtoken');
 var bearerToken = require('express-bearer-token');
 
 require('./application/controller-service-layer/config.js');
 var hfc = require('fabric-client');
-
-// var helper = require('./application/controller-service-layer/services/helper.js');
-// var channels = require('./application/controller-service-layer/services/channelService.js');
-// var join = require('./application/controller-service-layer/services/join-channel.js');
-// var install = require('./application/controller-service-layer/services/install-chaincode.js');
-// var instantiate = require('./application/controller-service-layer/services/instantiate-chaincode.js');
-// var invoke = require('./application/controller-service-layer/services/invoke-transaction.js');
-// var query = require('./application/controller-service-layer/services/query.js');
 var host = process.env.HOST || hfc.getConfigSetting('host');
 var port = process.env.PORT || hfc.getConfigSetting('port');
-
-//===============================================================================
 
 console.log("configurationHolder", configurationHolder.Bootstrap)
 app.use(errorHandler());
@@ -69,8 +53,6 @@ app.use(bodyParser.urlencoded({
 	extended: false
 }));
 
-
-//================================================================================================
 
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// SET CONFIGURATONS ////////////////////////////
@@ -134,70 +116,3 @@ global.wiring = require('./configurations/UrlMapping');
 new Layers(app, router, __dirname + '/application/controller-service-layer', wiring);
 
 configurationHolder.Bootstrap.initApp();
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////// REST ENDPOINTS START HERE ///////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-
-// // Register and enroll user
-// app.post('/users', function(req, res) {
-
-// });
-
-// // Create Channel
-// app.post('/channels', function(req, res) {
-
-// });
-
-// // Join Channel
-// app.post('/channels/:channelName/peers', function(req, res) {
-	
-// });
-
-
-// // Install chaincode on target peers
-// app.post('/chaincodes', function(req, res) {
-	
-// });
-// // Instantiate chaincode on target peers
-// app.post('/channels/:channelName/chaincodes', function(req, res) {
-
-// });
-// // Invoke transaction on chaincode on target peers
-// app.post('/channels/:channelName/chaincodes/:chaincodeName', function(req, res) {
-	
-// });
-// // Query on chaincode on target peers
-// app.get('/channels/:channelName/chaincodes/:chaincodeName', function(req, res) {
-	
-// });
-// //  Query Get Block by BlockNumber
-// app.get('/channels/:channelName/blocks/:blockId', function(req, res) {
-	
-// });
-// // Query Get Transaction by Transaction ID
-// app.get('/channels/:channelName/transactions/:trxnId', function(req, res) {
-	
-// });
-// // Query Get Block by Hash
-// app.get('/channels/:channelName/blocks', function(req, res) {
-
-// });
-// //Query for Channel Information
-// app.get('/channels/:channelName', function(req, res) {
-	
-// });
-// // Query to fetch all Installed/instantiated chaincodes
-// app.get('/chaincodes', function(req, res) {
-	
-// });
-// // Query to fetch channels
-// app.get('/channels', function(req, res) {
-	
-// });
-
-
-
-

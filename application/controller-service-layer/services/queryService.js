@@ -31,7 +31,7 @@ queryService.prototype.queryChaincode = function(peer, channelName, chaincodeNam
 			args: args
 		};
 		logger.debug('printing transaction id start');		
-		logger.debug(txId);
+		logger.debug(request.txId);
 		logger.debug('printing transaction id end');
 		return channel.queryByChaincode(request, target);
 	}, (err) => {
