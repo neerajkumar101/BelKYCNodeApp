@@ -16,7 +16,7 @@ starttime=$(date +%s)
 echo "POST request Enroll on Org1  ..."
 echo
 ORG1_TOKEN=$(curl -s -X POST \
-  http://localhost:4000/users \
+  http://localhost:4000/api/v1/users \
   -H "content-type: application/x-www-form-urlencoded" \
   -d 'username=Jim&orgName=org1')
 echo $ORG1_TOKEN
@@ -27,7 +27,7 @@ echo
 echo "POST request Enroll on Org2 ..."
 echo
 ORG2_TOKEN=$(curl -s -X POST \
-  http://localhost:4000/users \
+  http://localhost:4000/api/v1/users \
   -H "content-type: application/x-www-form-urlencoded" \
   -d 'username=Barry&orgName=org2')
 echo $ORG2_TOKEN
@@ -39,12 +39,12 @@ echo
 echo "POST request Create channel  ..."
 echo
 curl -s -X POST \
-  http://localhost:4000/channels \
+  http://localhost:4000/api/v1/channels \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json" \
   -d '{
 	"channelName":"mychannel",
-	"channelConfigPath":"../artifacts/channel/mychannel.tx"
+	"channelConfigPath":"artifacts/channel/mychannel.tx"
 }'
 echo
 echo
@@ -52,33 +52,27 @@ sleep 5
 echo "POST request Join channel on Org1"
 echo
 curl -s -X POST \
-  http://localhost:4000/channels/mychannel/peers \
+  http://localhost:4000/api/v1/channels/mychannel/peers \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json" \
   -d '{
-	"peers": ["peer1"]
+	"username" : "neeraj",
+  "orgname" : "org1",
+  "channelName" : "mychannel",
+  "peers" : ["peer1", "peer2"]
 }'
 echo
-
-
-curl -s -X POST \
-  http://localhost:4000/channels/mychannel/peers \
-  -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTU2MDM3MjYsInVzZXJuYW1lIjoibmVlcmFqIiwib3JnTmFtZSI6Im9yZzEiLCJpYXQiOjE1MTU1Njc3MjZ9.8H1or9VnG30zMtcjbN7BH9dDB7va06TzkitkXeHT4v4" \
-  -H "content-type: application/json" \
-  -d '{
-	"peers": ["peer1", peer2"]
-}'
-
-echo
-
 echo "POST request Join channel on Org2"
 echo
 curl -s -X POST \
-  http://localhost:4000/channels/mychannel/peers \
+  http://localhost:4000/api/v1/channels/mychannel/peers \
   -H "authorization: Bearer $ORG2_TOKEN" \
   -H "content-type: application/json" \
   -d '{
-	"peers": ["peer1","peer2"]
+	"username" : "rajput",
+  "orgname" : "org2",
+  "channelName" : "mychannel",
+  "peers" : ["peer1", "peer2"]
 }'
 echo
 echo
@@ -86,14 +80,17 @@ echo
 echo "POST Install chaincode on Org1"
 echo
 curl -s -X POST \
-  http://localhost:4000/chaincodes \
+  http://localhost:4000/api/v1/chaincodes \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json" \
   -d '{
-	"peers": ["peer1", "peer2"],
-	"chaincodeName":"mycc",
-	"chaincodePath":"github.com/example_cc",
-	"chaincodeVersion":"v0"
+	"username" : "neeraj",
+  "orgname" : "org1",
+  "chaincodeName" : "mycc",
+  "chaincodePath" : "artifacts/src/github.com/example_cc/",
+  "channelName" : "mychannel",
+  "chaincodeVersion" : "v0",
+  "peers" : ["peer1", "peer2"]
 }'
 echo
 echo
@@ -102,14 +99,17 @@ echo
 echo "POST Install chaincode on Org2"
 echo
 curl -s -X POST \
-  http://localhost:4000/chaincodes \
+  http://localhost:4000/api/v1/chaincodes \
   -H "authorization: Bearer $ORG2_TOKEN" \
   -H "content-type: application/json" \
   -d '{
-	"peers": ["peer1","peer2"],
-	"chaincodeName":"mycc",
-	"chaincodePath":"github.com/example_cc",
-	"chaincodeVersion":"v0"
+	"username" : "rajput",
+  "orgname" : "org2",
+  "chaincodeName" : "mycc",
+  "chaincodePath" : "artifacts/src/github.com/example_cc/",
+  "channelName" : "mychannel",
+  "chaincodeVersion" : "v0",
+  "peers" : ["peer1", "peer2"]
 }'
 echo
 echo
@@ -117,13 +117,15 @@ echo
 echo "POST instantiate chaincode on peer1 of Org1"
 echo
 curl -s -X POST \
-  http://localhost:4000/channels/mychannel/chaincodes \
+  http://localhost:4000/api/v1/channels/mychannel/chaincodes \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json" \
   -d '{
-	"chaincodeName":"mycc",
-	"chaincodeVersion":"v0",
-	"args":["init","0"]
+  "username" : "neeraj",
+  "orgname" : "org1",
+  "chaincodeName" : "mycc",
+  "chaincodeVersion" : "v0",
+  "args" : ["init", "0"]
 }'
 echo
 echo
@@ -131,12 +133,14 @@ echo
 echo "POST invoke chaincode on peers of Org1 and Org2"
 echo
 TRX_ID=$(curl -s -X POST \
-  http://localhost:4000/channels/mychannel/chaincodes/mycc \
+  http://localhost:4000/api/v1/channels/mychannel/chaincodes/mycc \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json" \
   -d '{
-	"fcn":"init_owner",
-	"args":["o001","raghu","bel"]
+  "username" : "neeraj",
+  "orgname" : "org1",
+  "fcn":"init_owner",
+  "args":["o001","raghu","bel"]
 }')
 echo "Transacton ID is $TRX_ID"
 echo
@@ -145,7 +149,7 @@ echo
 echo "GET query chaincode on peer1 of Org1"
 echo
 curl -s -X GET \
-  "http://localhost:4000/channels/mychannel/chaincodes/mycc?peer=peer1&fcn=read&args=["o001"]" \
+  "http://localhost:4000/api/v1/channels/mychannel/chaincodes/mycc?peer=peer1&fcn=read&args=["o001"]" \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json"
 echo
@@ -154,7 +158,7 @@ echo
 echo "GET query Block by blockNumber"
 echo
 curl -s -X GET \
-  "http://localhost:4000/channels/mychannel/blocks/1?peer=peer1" \
+  "http://localhost:4000/api/v1/channels/mychannel/blocks/1?peer=peer1" \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json"
 echo
@@ -162,12 +166,12 @@ echo
 
 echo "GET query Transaction by TransactionID"
 echo
-curl -s -X GET http://localhost:4000/channels/mychannel/transactions/$TRX_ID?peer=peer1 \
+curl -s -X GET http://localhost:4000/api/v1/channels/mychannel/transactions/$TRX_ID?peer=peer1 \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json"
 echo
 echo
-
+eb43531f34c7a9c8b2e6323797910e392f6ac8d0e4da79cbb221806cf48f44cb
 ############################################################################
 ### TODO: What to pass to fetch the Block information
 ############################################################################
@@ -175,7 +179,7 @@ echo
 #echo
 #hash=????
 #curl -s -X GET \
-#  "http://localhost:4000/channels/mychannel/blocks?hash=$hash&peer=peer1" \
+#  "http://localhost:4000/api/v1/channels/mychannel/blocks?hash=$hash&peer=peer1" \
 #  -H "authorization: Bearer $ORG1_TOKEN" \
 #  -H "cache-control: no-cache" \
 #  -H "content-type: application/json" \
@@ -186,7 +190,7 @@ echo
 echo "GET query ChainInfo"
 echo
 curl -s -X GET \
-  "http://localhost:4000/channels/mychannel?peer=peer1" \
+  "http://localhost:4000/api/v1/channels/mychannel?peer=peer1" \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json"
 echo
@@ -195,7 +199,7 @@ echo
 echo "GET query Installed chaincodes"
 echo
 curl -s -X GET \
-  "http://localhost:4000/chaincodes?peer=peer1&type=installed" \
+  "http://localhost:4000/api/v1/chaincodes?peer=peer1&type=installed" \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json"
 echo
@@ -204,7 +208,7 @@ echo
 echo "GET query Instantiated chaincodes"
 echo
 curl -s -X GET \
-  "http://localhost:4000/chaincodes?peer=peer1&type=instantiated" \
+  "http://localhost:4000/api/v1/chaincodes?peer=peer1&type=instantiated" \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json"
 echo
@@ -213,7 +217,7 @@ echo
 echo "GET query Channels"
 echo
 curl -s -X GET \
-  "http://localhost:4000/channels?peer=peer1" \
+  "http://localhost:4000/api/v1/channels?peer=peer1" \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json"
 echo

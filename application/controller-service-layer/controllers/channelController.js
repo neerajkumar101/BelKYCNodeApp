@@ -41,8 +41,8 @@ module.exports = function() {
         logger.info('<<<<<<<<<<<<<<<<< J O I N  C H A N N E L >>>>>>>>>>>>>>>>>');
         var channelName = req.params.channelName;
         var peers = req.body.peers;
-        var username = req.body.username;
-        var orgname = req.body.orgname;
+        var username = req.user.username;
+        var orgname = req.user.orgName;
 
         logger.debug('channelName : ' + channelName);
         logger.debug('peers : ' + peers);

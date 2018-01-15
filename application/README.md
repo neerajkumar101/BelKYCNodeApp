@@ -35,7 +35,7 @@ There are two options available for running the balance-transfer sample
 * Launch the network using docker-compose
 
 ```
-docker-compose -f artifacts/docker-compose.yaml up -d
+docker-compose -f artifacts/docker-compose.yaml up
 ```
 ##### Terminal Window 2
 
