@@ -283,7 +283,6 @@ var getOrgAdmin = function(userOrg) {
 
 var setupChaincodeDeploy = function() {
 	process.env.GOPATH = path.join(__dirname, '../', hfc.getConfigSetting('CC_SRC_PATH'));
-	// process.env.GOPATH = path.join(__dirname, '../');	
 };
 
 var getLogger = function(moduleName) {

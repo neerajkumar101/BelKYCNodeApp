@@ -33,8 +33,7 @@ chaincodeService.prototype.installChaincode = function(peers, chaincodeName, cha
     return helper.getOrgAdmin(org).then((user) => {
         var request = {
             targets: helper.newPeers(peers, org),
-            chaincodePath: path.join('../..', chaincodePath),
-            // chaincodePath: path.join('../', chaincodePath),        
+            chaincodePath: chaincodePath,
             chaincodeId: chaincodeName,
             chaincodeVersion: chaincodeVersion
         };

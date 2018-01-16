@@ -87,7 +87,7 @@ curl -s -X POST \
 	"username" : "neeraj",
   "orgname" : "org1",
   "chaincodeName" : "mycc",
-  "chaincodePath" : "artifacts/src/github.com/example_cc/",
+  "chaincodePath" : "github.com/example_cc/",
   "channelName" : "mychannel",
   "chaincodeVersion" : "v0",
   "peers" : ["peer1", "peer2"]
@@ -106,7 +106,7 @@ curl -s -X POST \
 	"username" : "rajput",
   "orgname" : "org2",
   "chaincodeName" : "mycc",
-  "chaincodePath" : "artifacts/src/github.com/example_cc/",
+  "chaincodePath" : "github.com/example_cc/",
   "channelName" : "mychannel",
   "chaincodeVersion" : "v0",
   "peers" : ["peer1", "peer2"]
@@ -125,7 +125,7 @@ curl -s -X POST \
   "orgname" : "org1",
   "chaincodeName" : "mycc",
   "chaincodeVersion" : "v0",
-  "args" : ["init", "0"]
+  "args" : ["0"]
 }'
 echo
 echo
