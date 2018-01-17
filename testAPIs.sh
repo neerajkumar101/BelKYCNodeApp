@@ -18,7 +18,7 @@ echo
 ORG1_TOKEN=$(curl -s -X POST \
   http://localhost:4000/api/v1/users \
   -H "content-type: application/x-www-form-urlencoded" \
-  -d 'username=Neeraj&orgName=org1')
+  -d 'userName=Neeraj&orgName=org1')
 echo $ORG1_TOKEN
 ORG1_TOKEN=$(echo $ORG1_TOKEN | jq ".token" | sed "s/\"//g")
 echo
@@ -29,7 +29,7 @@ echo
 ORG2_TOKEN=$(curl -s -X POST \
   http://localhost:4000/api/v1/users \
   -H "content-type: application/x-www-form-urlencoded" \
-  -d 'username=Rajput&orgName=org2')
+  -d 'userName=Rajput&orgName=org2')
 echo $ORG2_TOKEN
 ORG2_TOKEN=$(echo $ORG2_TOKEN | jq ".token" | sed "s/\"//g")
 echo
@@ -56,8 +56,6 @@ curl -s -X POST \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json" \
   -d '{
-	"username" : "Neeraj",
-  "orgname" : "org1",
   "channelName" : "mychannel",
   "peers" : ["peer1", "peer2"]
 }'
@@ -69,8 +67,6 @@ curl -s -X POST \
   -H "authorization: Bearer $ORG2_TOKEN" \
   -H "content-type: application/json" \
   -d '{
-	"username" : "Rajput",
-  "orgname" : "org2",
   "channelName" : "mychannel",
   "peers" : ["peer1", "peer2"]
 }'
@@ -84,8 +80,6 @@ curl -s -X POST \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json" \
   -d '{
-	"username" : "Neeraj",
-  "orgname" : "org1",
   "chaincodeName" : "mycc",
   "chaincodePath" : "github.com/example_cc/",
   "channelName" : "mychannel",
@@ -103,8 +97,6 @@ curl -s -X POST \
   -H "authorization: Bearer $ORG2_TOKEN" \
   -H "content-type: application/json" \
   -d '{
-	"username" : "Rajput",
-  "orgname" : "org2",
   "chaincodeName" : "mycc",
   "chaincodePath" : "github.com/example_cc/",
   "channelName" : "mychannel",
@@ -121,8 +113,6 @@ curl -s -X POST \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json" \
   -d '{
-  "username" : "Neeraj",
-  "orgname" : "org1",
   "chaincodeName" : "mycc",
   "chaincodeVersion" : "v0",
   "args" : ["0"]
@@ -137,8 +127,6 @@ TRX_ID=$(curl -s -X POST \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json" \
   -d '{
-  "username" : "Neeraj",
-  "orgname" : "org1",
   "fcn":"init_owner",
   "args":["o001","raghu","bel"]
 }')
