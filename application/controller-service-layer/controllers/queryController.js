@@ -10,8 +10,8 @@ module.exports = function() {
         let args = req.query.args;
         let fcn = req.query.fcn;
         let peer = req.query.peer;
-        var username = req.user.username;
-        var orgname = req.user.orgName;
+        var userName = req.user.userName;
+        var orgName = req.user.orgName;
     
         logger.debug('channelName : ' + channelName);
         logger.debug('chaincodeName : ' + chaincodeName);
@@ -37,22 +37,23 @@ module.exports = function() {
         args = args.replace(/'/g, '"');
         args = JSON.parse(args);
         logger.debug(args);
-        this.services.queryService.queryChaincode(peer, channelName, chaincodeName, args, fcn, username, orgname)
+        this.services.queryService.queryChaincode(peer, channelName, chaincodeName, args, fcn, userName, orgName)
         .then(function(message) {
             res.send(message);
         });
 
     }
-
+    /**
+     * 
+     */
     var queryBlockByNumber = function(req, res, callback) {
-
-        var username = req.user.username;
-        var orgname = req.user.orgName;
 
         logger.debug('==================== GET BLOCK BY NUMBER ==================');
 
         let blockId = req.params.blockId;
         let peer = req.query.peer;
+        var userName = req.user.userName;
+        var orgName = req.user.orgName;
 
         logger.debug('channelName : ' + req.params.channelName);
         logger.debug('BlockID : ' + blockId);
@@ -62,13 +63,16 @@ module.exports = function() {
             return;
         }
     
-        this.services.queryService.queryBlockByNumber(peer, blockId, username, orgname)
+        this.services.queryService.queryBlockByNumber(peer, blockId, userName, orgName)
             .then(function(message) {
                 res.send(message);
             });
         
     }
 
+    /**
+     * 
+     */
     var queryTransactionByID = function(req, res, callback) {
 
         logger.debug(
@@ -77,36 +81,38 @@ module.exports = function() {
         logger.debug('channelName : ' + req.params.channelName);
         let trxnId = req.params.trxnId;
         let peer = req.query.peer;
-        var username = req.user.username;
-        var orgname = req.user.orgName;
+        var userName = req.user.userName;
+        var orgName = req.user.orgName;
 
         if (!trxnId) {
             res.json(getErrorMessage('\'trxnId\''));
             return;
         }
     
-        this.services.queryService.queryTransactionByID(peer, trxnId, username, orgname)
+        this.services.queryService.queryTransactionByID(peer, trxnId, userName, orgName)
             .then(function(message) {
                 res.send(message);
             });
         
     }
-
+    /**
+     * 
+     */
     var queryBlockByHash = function(req, res, callback) {
         
         logger.debug('================ GET BLOCK BY HASH ======================');
         logger.debug('channelName : ' + req.params.channelName);
         let hash = req.query.hash;
         let peer = req.query.peer;
-        var username = req.user.username;
-        var orgname = req.user.orgName;
+        var userName = req.user.userName;
+        var orgName = req.user.orgName;
 
         if (!hash) {
             res.json(getErrorMessage('\'hash\''));
             return;
         }
     
-        this.services.queryService.queryBlockByHash(peer, hash, username, orgname).then(
+        this.services.queryService.queryBlockByHash(peer, hash, userName, orgName).then(
             function(message) {
                 res.send(message);
             });
@@ -114,28 +120,34 @@ module.exports = function() {
         
     }
 
+    /**
+     * 
+     */
     var queryChainInfo = function(req, res, callback) {
 
         logger.debug(
             '================ GET CHANNEL INFORMATION ======================');
         logger.debug('channelName : ' + req.params.channelName);
         let peer = req.query.peer;
-        var username = req.user.username;
-        var orgname = req.user.orgName;
+        var userName = req.user.userName;
+        var orgName = req.user.orgName;
     
-        this.services.queryService.queryChainInfo(peer, username, orgname).then(
+        this.services.queryService.queryChainInfo(peer, userName, orgName).then(
             function(message) {
                 res.send(message);
             });       
         
     }
 
+    /**
+     * 
+     */
     var queryInstalledChaincodes = function(req, res, callback) {
         
         var peer = req.query.peer;
         var installType = req.query.type;
-        var username = req.user.username;
-        var orgname = req.user.orgName;
+        var userName = req.user.userName;
+        var orgName = req.user.orgName;
 
         //TODO: add Constnats
         if (installType === 'installed') {
@@ -146,27 +158,30 @@ module.exports = function() {
                 '================ GET INSTANTIATED CHAINCODES ======================');
         }
     
-        this.services.queryService.queryInstalledChaincodes(peer, installType, username, orgname)
+        this.services.queryService.queryInstalledChaincodes(peer, installType, userName, orgName)
         .then(function(message) {
             res.send(message);
         });
 
     }
 
+    /**
+     * 
+     */
     var queryChannels = function(req, res, callback) {
 
         logger.debug('================ GET CHANNELS ======================');
         logger.debug('peer: ' + req.query.peer);
         var peer = req.query.peer;
-        var username = req.user.username;
-        var orgname = req.user.orgName;
+        var userName = req.user.userName;
+        var orgName = req.user.orgName;
 
         if (!peer) {
             res.json(getErrorMessage('\'peer\''));
             return;
         }
     
-        this.services.queryService.queryChannels(peer, username, orgname)
+        this.services.queryService.queryChannels(peer, userName, orgName)
         .then(function(
             message) {
             res.send(message);
@@ -183,7 +198,6 @@ module.exports = function() {
         queryBlockByHash : queryBlockByHash,
         queryChainInfo : queryChainInfo,
         queryInstalledChaincodes : queryInstalledChaincodes,
-        queryChannels : queryChannels,
-
+        queryChannels : queryChannels
     }
 };

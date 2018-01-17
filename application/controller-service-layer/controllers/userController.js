@@ -7,13 +7,13 @@ var hfc = require('fabric-client');
 module.exports = function() {
     var getRegisteredUsers = function(req, res, callback) {
 
-        var username = req.body.username;
+        var userName = req.body.userName;
         var orgName = req.body.orgName;
-        logger.debug('End point : /users');
-        logger.debug('User name : ' + username);
+        logger.debug('End point : /api/v1/users');
+        logger.debug('User name : ' + userName);
         logger.debug('Org name  : ' + orgName);
-        if (!username) {
-            res.json(getErrorMessage('\'username\''));
+        if (!userName) {
+            res.json(getErrorMessage('\'userName\''));
             return;
         }
         if (!orgName) {
@@ -22,10 +22,10 @@ module.exports = function() {
         }
         var token = jwt.sign({
             exp: Math.floor(Date.now() / 1000) + parseInt(hfc.getConfigSetting('jwt_expiretime')),
-            username: username,
+            userName: userName,
             orgName: orgName
         }, app.get('secret'));
-        helper.getRegisteredUsers(username, orgName, true).then(function(response) {
+        helper.getRegisteredUsers(userName, orgName, true).then(function(response) {
             if (response && typeof response !== 'string') {
                 response.token = token;
                 res.json(response);
@@ -39,10 +39,7 @@ module.exports = function() {
 
     }
 
-
-
     return {
         getRegisteredUsers: getRegisteredUsers,
-
     }
 };

@@ -20,27 +20,27 @@ chaincodeService = function(app) {
 chaincodeService.prototype = new BaseService();
 
 //=================================Installing Chaincode===========================================
-chaincodeService.prototype.installChaincode = function(peers, chaincodeName, chaincodePath, chaincodeVersion, username, org) {
+chaincodeService.prototype.installChaincode = function(peers, chaincodeName, chaincodePath, chaincodeVersion, userName, orgName) {
 
     var logger = helper.getLogger('install-chaincode');
 
     logger.debug(
         '\n============ Install chaincode on organizations ============\n');
     helper.setupChaincodeDeploy();
-    var channel = helper.getChannelForOrg(org);
-    var client = helper.getClientForOrg(org);
+    var channel = helper.getChannelForOrg(orgName);
+    var client = helper.getClientForOrg(orgName);
 
-    return helper.getOrgAdmin(org).then((user) => {
+    return helper.getOrgAdmin(orgName).then((user) => {
         var request = {
-            targets: helper.newPeers(peers, org),
+            targets: helper.newPeers(peers, orgName),
             chaincodePath: chaincodePath,
             chaincodeId: chaincodeName,
             chaincodeVersion: chaincodeVersion
         };
         return client.installChaincode(request);
     }, (err) => {
-        logger.error('Failed to enroll user \'' + username + '\'. ' + err);
-        throw new Error('Failed to enroll user \'' + username + '\'. ' + err);
+        logger.error('Failed to enroll user \'' + userName + '\'. ' + err);
+        throw new Error('Failed to enroll user \'' + userName + '\'. ' + err);
     }).then((results) => {
         var proposalResponses = results[0];
         var proposal = results[1];
@@ -60,9 +60,9 @@ chaincodeService.prototype.installChaincode = function(peers, chaincodeName, cha
             logger.info(util.format(
                 'Successfully sent install Proposal and received ProposalResponse: Status - %s',
                 proposalResponses[0].response.status));
-            logger.debug('\nSuccessfully Installed chaincode on organization ' + org +
+            logger.debug('\nSuccessfully Installed chaincode on organization ' + orgName +
                 '\n');
-            return 'Successfully Installed chaincode on organization ' + org;
+            return 'Successfully Installed chaincode on organization ' + orgName;
         } else {
             logger.error(
                 'Failed to send install Proposal or receive valid response. Response null or status is not 200. exiting...'
@@ -78,24 +78,24 @@ chaincodeService.prototype.installChaincode = function(peers, chaincodeName, cha
 
 };
 
-chaincodeService.prototype.instantiateChaincode = function(channelName, chaincodeName, chaincodeVersion, functionName, args, username, org) {
+chaincodeService.prototype.instantiateChaincode = function(channelName, chaincodeName, chaincodeVersion, functionName, args, userName, orgName) {
 
     var logger = helper.getLogger('instantiate-chaincode');
 
-    logger.debug('\n============ Instantiate chaincode on organization ' + org +
+    logger.debug('\n============ Instantiate chaincode on organization ' + orgName +
     ' ============\n');
 
-    var channel = helper.getChannelForOrg(org);
-    var client = helper.getClientForOrg(org);
+    var channel = helper.getChannelForOrg(orgName);
+    var client = helper.getClientForOrg(orgName);
 
-    return helper.getOrgAdmin(org).then((user) => {
+    return helper.getOrgAdmin(orgName).then((user) => {
         // read the config block from the orderer for the channel
         // and initialize the verify MSPs based on the participating
         // organizations
         return channel.initialize();
     }, (err) => {
-        logger.error('Failed to enroll user \'' + username + '\'. ' + err);
-        throw new Error('Failed to enroll user \'' + username + '\'. ' + err);
+        logger.error('Failed to enroll user \'' + userName + '\'. ' + err);
+        throw new Error('Failed to enroll user \'' + userName + '\'. ' + err);
     }).then((success) => {
         tx_id = client.newTransactionID();
         // send proposal to endorser
@@ -144,12 +144,12 @@ chaincodeService.prototype.instantiateChaincode = function(channelName, chaincod
             var deployId = tx_id.getTransactionID();
 
             eh = client.newEventHub();
-            let data = fs.readFileSync(path.join(__dirname, ORGS[org].peers['peer1'][
+            let data = fs.readFileSync(path.join(__dirname, ORGS[orgName].peers['peer1'][
                 'tls_cacerts'
             ]));
-            eh.setPeerAddr(ORGS[org].peers['peer1']['events'], {
+            eh.setPeerAddr(ORGS[orgName].peers['peer1']['events'], {
                 pem: Buffer.from(data).toString(),
-                'ssl-target-name-override': ORGS[org].peers['peer1']['server-hostname']
+                'ssl-target-name-override': ORGS[orgName].peers['peer1']['server-hostname']
             });
             eh.connect();
 
@@ -217,18 +217,18 @@ chaincodeService.prototype.instantiateChaincode = function(channelName, chaincod
 
 };
 
-chaincodeService.prototype.invokeChaincode = function(peerNames, channelName, chaincodeName, fcn, args, username, org) {
+chaincodeService.prototype.invokeChaincode = function(peerNames, channelName, chaincodeName, fcn, args, userName, orgName) {
 
     var logger = helper.getLogger('invoke-chaincode');
 
-    logger.debug(util.format('\n============ invoke transaction on organization %s ============\n', org));
-    var client = helper.getClientForOrg(org);
-    var channel = helper.getChannelForOrg(org);
-    var targets = (peerNames) ? helper.newPeers(peerNames, org) : undefined;
+    logger.debug(util.format('\n============ invoke transaction on organization %s ============\n', orgName));
+    var client = helper.getClientForOrg(orgName);
+    var channel = helper.getChannelForOrg(orgName);
+    var targets = (peerNames) ? helper.newPeers(peerNames, orgName) : undefined;
     var tx_id = null;
     var res = null;
 
-    return helper.getRegisteredUsers(username, org).then((user) => {
+    return helper.getRegisteredUsers(userName, orgName).then((user) => {
         tx_id = client.newTransactionID();
         logger.debug(util.format('Sending transaction "%j"', tx_id));
         // send proposal to endorser
@@ -246,8 +246,8 @@ chaincodeService.prototype.invokeChaincode = function(peerNames, channelName, ch
         // logger.debug(channel.sendTransactionProposal(request));
         return channel.sendTransactionProposal(request);
     }, (err) => {
-        logger.error('Failed to enroll user \'' + username + '\'. ' + err);
-        throw new Error('Failed to enroll user \'' + username + '\'. ' + err);
+        logger.error('Failed to enroll user \'' + userName + '\'. ' + err);
+        throw new Error('Failed to enroll user \'' + userName + '\'. ' + err);
     }).then((results) => {
         var proposalResponses = results[0];
         var proposal = results[1];
@@ -290,7 +290,7 @@ chaincodeService.prototype.invokeChaincode = function(peerNames, channelName, ch
                 });
             }
 
-            var eventhubs = helper.newEventHubs(peerNames, org);
+            var eventhubs = helper.newEventHubs(peerNames, orgName);
             for (let key in eventhubs) {
                 let eh = eventhubs[key];
                 eh.connect();

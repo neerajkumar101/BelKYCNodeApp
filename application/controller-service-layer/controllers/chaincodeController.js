@@ -11,8 +11,8 @@ module.exports = function() {
         var chaincodeName = req.body.chaincodeName;
         var chaincodePath = req.body.chaincodePath;
         var chaincodeVersion = req.body.chaincodeVersion;
-        var username = req.body.username;
-        var orgname = req.body.orgname;
+        var userName = req.user.userName;
+        var orgName = req.user.orgName;
 
 
         logger.debug('peers : ' + peers); // target peers list
@@ -37,7 +37,7 @@ module.exports = function() {
         }
 
         this.services.chaincodeService.installChaincode(peers, chaincodeName, chaincodePath,
-            chaincodeVersion, username, orgname).then(function(message) {
+            chaincodeVersion, userName, orgName).then(function(message) {
             res.send(message);
         });
 
@@ -54,8 +54,8 @@ module.exports = function() {
         var chaincodeName = req.body.chaincodeName;
         var chaincodeVersion = req.body.chaincodeVersion;
         var channelName = req.params.channelName;
-        var username = req.body.username;
-        var orgname = req.body.orgname;
+        var userName = req.user.userName;
+        var orgName = req.user.orgName;
 
         var fcn = req.body.fcn;
         var args = req.body.args;
@@ -81,7 +81,7 @@ module.exports = function() {
             return;
         }
 
-        this.services.chaincodeService.instantiateChaincode(channelName, chaincodeName, chaincodeVersion, fcn, args, username, orgname)
+        this.services.chaincodeService.instantiateChaincode(channelName, chaincodeName, chaincodeVersion, fcn, args, userName, orgName)
         .then(function(message) {
             res.send(message);
         });
@@ -101,8 +101,8 @@ module.exports = function() {
         var channelName = req.params.channelName;
         var fcn = req.body.fcn;
         var args = req.body.args;
-        var username = req.body.username;
-        var orgname = req.body.orgname;
+        var userName = req.user.userName;
+        var orgName = req.user.orgName;
 
         logger.debug('channelName  : ' + channelName);
         logger.debug('chaincodeName : ' + chaincodeName);
@@ -125,7 +125,7 @@ module.exports = function() {
             return;
         }
     
-        this.services.chaincodeService.invokeChaincode(peers, channelName, chaincodeName, fcn, args, username, orgname)
+        this.services.chaincodeService.invokeChaincode(peers, channelName, chaincodeName, fcn, args, userName, orgName)
         .then(function(message) {
             let json = message.toString('utf-8');
             if(json.payload){
