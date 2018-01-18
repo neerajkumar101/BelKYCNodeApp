@@ -3,9 +3,8 @@ var logger = helper.getLogger('Helper');
 var jwt = require('jsonwebtoken');
 var hfc = require('fabric-client');
 
-
 module.exports = function() {
-    var getRegisteredUsers = function(req, res, callback) {
+    var registerUsers = function(req, res, callback) {
 
         var userName = req.body.userName;
         var orgName = req.body.orgName;
@@ -25,7 +24,9 @@ module.exports = function() {
             userName: userName,
             orgName: orgName
         }, app.get('secret'));
-        helper.getRegisteredUsers(userName, orgName, true).then(function(response) {
+        // helper.getRegisteredUsers(userName, orgName, true).then(function(response) {
+        this.services.userService.getRegisteredUsers(userName, orgName, true).then(function(response) {
+            
             if (response && typeof response !== 'string') {
                 response.token = token;
                 res.json(response);
@@ -39,7 +40,12 @@ module.exports = function() {
 
     }
 
+    function saveUser(req, res, callback){
+        this.services.userService.saveUser(callback)
+    }
+
     return {
-        getRegisteredUsers: getRegisteredUsers,
+        registerUsers: registerUsers,
+        saveUser:saveUser
     }
 };

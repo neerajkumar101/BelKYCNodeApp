@@ -19,7 +19,7 @@ var path = require('path');
 var config = require('../config.json');
 var helper = require('./helper.js');
 var BaseService = require('./BaseService');
-
+// var userService = require('./userService');
 
 var Peer = require('fabric-client/lib/Peer.js');
 var EventHub = require('fabric-client/lib/EventHub.js');
@@ -29,7 +29,6 @@ var nonce = null;
 //helper.hfc.addConfigFile(path.join(__dirname, 'network-config.json'));
 var ORGS = helper.ORGS;
 var allEventhubs = [];
-
 
 channelService = function(app) {
 	this.app = app;
@@ -44,9 +43,6 @@ channelService.prototype.createChannel = function(channelName, channelConfigPath
 
     // db interaction placed here
 
-
-
-
 	logger.debug('\n====== Creating Channel \'' + channelName + '\' ======\n');
 	var client = helper.getClientForOrg(orgName);
 	var channel = helper.getChannelForOrg(orgName);
@@ -58,7 +54,9 @@ channelService.prototype.createChannel = function(channelName, channelConfigPath
 	var channelConfig = client.extractChannelConfig(envelope);
 
 	//Acting as a client in the given organization provided with "orgName" param
-	return helper.getOrgAdmin(orgName).then((admin) => {
+	// return helper.getOrgAdmin(orgName).then((admin) => {
+		return app.services.userService.getOrgAdmin(orgName).then((admin) => {	
+
 		logger.debug(util.format('Successfully acquired admin user for the organization "%s"', orgName));
 		// sign the channel config bytes as "endorsement", this is required by
 		// the orderer's channel creation policy
@@ -130,7 +128,8 @@ channelService.prototype.joinChannel = function(channelName, peers, username, or
 	var channel = helper.getChannelForOrg(orgName);
 	var eventhubs = [];
 
-	return helper.getOrgAdmin(orgName).then((admin) => {
+	// return helper.getOrgAdmin(orgName).then((admin) => {
+	return app.services.userService.getOrgAdmin(orgName).then((admin) => {		
 		logger.info(util.format('received member object for admin of the organization "%s": ', orgName));
 		tx_id = client.newTransactionID();
 		let request = {

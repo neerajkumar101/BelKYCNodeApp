@@ -7,9 +7,9 @@ var UserSchema = new mongooseSchema({
         type: String,
         default: 'Guest',
         required: false,
-        ref: 'Events',
+        // ref: 'Events',
         trim: true,
-        validate: [stringNotNull, "Full name is required."]
+        // validate: [stringNotNull, "Full name is required."]
     },
     email: {
         type: String,
@@ -29,84 +29,90 @@ var UserSchema = new mongooseSchema({
         default: '',
         trim: true
     },
-    salt: {
-        type: String,
-        default: '',
-        trim: true
-    },
-    accountLocked: {
-        type: Boolean,
-        default: true,
-        required: true,
-        trim: true
-    },
-    isAccountActive: {
-        type: Boolean,
-        default: true,
-        required: true,
-        trim: true
-    },
-    isEmailVerify: {
-        type: Boolean,
-        default: false,
-        required: true,
-        trim: true
-    },
-    gender: {
-        type: String,
-        default: '',
-        required: false,
-        trim: true
-    },
-    lastActiveTime: {
-        type: Date,
-        default: Date.now
-    },
-    provider: {
-        type: String,
-        trim: true
-    },
-    platform: {
-        type: String,
-        trim: true
-    },
-    userImage: {
-        type: String,
-        default: "",
-        requried: false,
-        ref: 'Events',
-        trim: true
-    },
-    deviceToken: {
-        androidToken: {
-            type: String,
-            default: '',
-            trim: true
-        },
-        iosToken: {
-            type: String,
-            default: '',
-            trim: true
-        }
-    },
-    city: {
-        type: String,
-        default: '',
-        requried: false,
-        trim: true
-    },
-    facebookId: {
-        type: String,
-        default: null,
-        requried: false,
-        trim: true
-    },
-    contryCode: {
-        type: Number,
-        default: 91 ,
-        requried: false,
-        trim: true
-    }
+    // salt: {
+    //     type: String,
+    //     default: '',
+    //     trim: true
+    // },
+    // accountLocked: {
+    //     type: Boolean,
+    //     default: true,
+    //     required: true,
+    //     trim: true
+    // },
+    // isAccountActive: {
+    //     type: Boolean,
+    //     default: true,
+    //     required: true,
+    //     trim: true
+    // },
+    // isEmailVerify: {
+    //     type: Boolean,
+    //     default: false,
+    //     required: true,
+    //     trim: true
+    // },
+    // gender: {
+    //     type: String,
+    //     default: '',
+    //     required: false,
+    //     trim: true
+    // },
+    // lastActiveTime: {
+    //     type: Date,
+    //     default: Date.now
+    // },
+    // provider: {
+    //     type: String,
+    //     trim: true
+    // },
+    // platform: {
+    //     type: String,
+    //     trim: true
+    // },
+    // userImage: {
+    //     type: String,
+    //     default: "",
+    //     requried: false,
+    //     ref: 'Events',
+    //     trim: true
+    // },
+    // userJwtToken: {
+    //     type: String,
+    //     requried: true,
+    //     default: '',
+    //     trim: true
+    // },
+    // deviceToken: {
+    //     androidToken: {
+    //         type: String,
+    //         default: '',
+    //         trim: true
+    //     },
+    //     iosToken: {
+    //         type: String,
+    //         default: '',
+    //         trim: true
+    //     }
+    // },
+    // city: {
+    //     type: String,
+    //     default: '',
+    //     requried: false,
+    //     trim: true
+    // },
+    // facebookId: {
+    //     type: String,
+    //     default: null,
+    //     requried: false,
+    //     trim: true
+    // },
+    // contryCode: {
+    //     type: Number,
+    //     default: 91 ,
+    //     requried: false,
+    //     trim: true
+    // }
 });
 
 UserSchema.pre('findOneAndUpdate', function(next) {

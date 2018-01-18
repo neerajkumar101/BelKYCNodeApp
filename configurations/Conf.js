@@ -1,21 +1,25 @@
 //add Roles in the system
-var roles = ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPERADMIN', 'ROLE_SUPPORT']
+// var roles = ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPERADMIN', 'ROLE_SUPPORT']
+var roles = ['ROLE_USER', 'ROLE_SUPPORT'];
 
 // Add different accessLevels
+// var accessLevels = {
+//     'anonymous': ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPERADMIN', 'ROLE_SUPPORT'],
+//     'user': ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPERADMIN', 'ROLE_SUPPORT'],
+//     'support': ['ROLE_ADMIN', 'ROLE_SUPERADMIN', 'ROLE_SUPPORT'],
+//     'admin': ['ROLE_ADMIN', 'ROLE_SUPERADMIN'],
+//     'superadmin': ['ROLE_SUPERADMIN']
+// }
 var accessLevels = {
-    'anonymous': ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPERADMIN', 'ROLE_SUPPORT'],
-    'user': ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPERADMIN', 'ROLE_SUPPORT'],
-    'support': ['ROLE_ADMIN', 'ROLE_SUPERADMIN', 'ROLE_SUPPORT'],
-    'admin': ['ROLE_ADMIN', 'ROLE_SUPERADMIN'],
-    'superadmin': ['ROLE_SUPERADMIN']
+    'user': ['ROLE_USER', 'ROLE_SUPPORT']
 }
 
 var configVariables = function() {
     switch (process.env.NODE_ENV) {
         case 'development':
             var config = {
-                port: 3003,
-                host: 'http://localhost:3003/',
+                port: 4000,
+                host: 'http://localhost:4000/',
                 emailBCC: ''
 
             }
@@ -25,7 +29,7 @@ var configVariables = function() {
 
         case 'production':
             var config = {
-                port: 3003,
+                port: 4000,
                 host: 'https://admin.xyz.com/',
                 emailBCC: ''
 
@@ -35,10 +39,9 @@ var configVariables = function() {
             config.accessLevels = accessLevels
             return config;
 
-
         case 'staging':
             var config = {
-                port: 3003,
+                port: 4000,
                 host: 'https://staging.xyz.com/',
                 emailBCC: ''
 
@@ -47,10 +50,6 @@ var configVariables = function() {
             config.roles = roles
             config.accessLevels = accessLevels
             return config;
-
-
-
-
 
     }
 }

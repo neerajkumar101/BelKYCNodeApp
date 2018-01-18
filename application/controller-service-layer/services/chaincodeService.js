@@ -15,7 +15,7 @@ var BaseService = require('./BaseService');
 chaincodeService = function(app) {
     this.app = app;
 };
-
+ var userService = require('./userService');
 
 chaincodeService.prototype = new BaseService();
 
@@ -30,7 +30,8 @@ chaincodeService.prototype.installChaincode = function(peers, chaincodeName, cha
     var channel = helper.getChannelForOrg(orgName);
     var client = helper.getClientForOrg(orgName);
 
-    return helper.getOrgAdmin(orgName).then((user) => {
+    // return helper.getOrgAdmin(orgName).then((user) => {
+    return app.services.userService.getOrgAdmin(orgName).then((user) => {        
         var request = {
             targets: helper.newPeers(peers, orgName),
             chaincodePath: chaincodePath,
@@ -88,7 +89,8 @@ chaincodeService.prototype.instantiateChaincode = function(channelName, chaincod
     var channel = helper.getChannelForOrg(orgName);
     var client = helper.getClientForOrg(orgName);
 
-    return helper.getOrgAdmin(orgName).then((user) => {
+    // return helper.getOrgAdmin(orgName).then((user) => {
+    return app.services.userService.getOrgAdmin(orgName).then((user) => {        
         // read the config block from the orderer for the channel
         // and initialize the verify MSPs based on the participating
         // organizations
@@ -227,8 +229,9 @@ chaincodeService.prototype.invokeChaincode = function(peerNames, channelName, ch
     var targets = (peerNames) ? helper.newPeers(peerNames, orgName) : undefined;
     var tx_id = null;
     var res = null;
-
-    return helper.getRegisteredUsers(userName, orgName).then((user) => {
+    
+    // return helper.getRegisteredUsers(userName, orgName).then((user) => {
+    return app.services.userService.getRegisteredUsers(userName, orgName).then((user) => {        
         tx_id = client.newTransactionID();
         logger.debug(util.format('Sending transaction "%j"', tx_id));
         // send proposal to endorser

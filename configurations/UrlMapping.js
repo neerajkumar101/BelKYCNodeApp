@@ -6,7 +6,7 @@ module.exports = function(app) {
 
 		"/api/v1/users": [{
 			method: "POST",
-			action: app.controllers.userController.getRegisteredUsers,
+			action: app.controllers.userController.registerUsers,
 			middleware: [],
 			views: {
 				json: views.jsonView
@@ -112,6 +112,14 @@ module.exports = function(app) {
 		"/api/v1/channels/:channelName": [{
 			method: "GET",
 			action: app.controllers.queryController.queryChainInfo,
+			middleware: [],
+			views: {
+				json: views.jsonView
+			}
+		}],
+		"/api/v1/saveUser": [{
+			method: "GET",
+			action: app.controllers.userController.saveUser,
 			middleware: [],
 			views: {
 				json: views.jsonView

@@ -96,19 +96,20 @@ app.use(function(req, res, next) {
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// START SERVER /////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-var server = http.createServer(app).listen(port, function() {});
-logger.info('****************** SERVER STARTED ************************');
-logger.info('**************  http://' + host + ':' + port +
-	'  ******************');
-server.timeout = 240000;
 
-function getErrorMessage(field) {
-	var response = {
-		success: false,
-		message: field + ' field is missing or Invalid in the request'
-	};
-	return response;
-}
+// var server = http.createServer(app).listen(port, function() {});
+// logger.info('****************** SERVER STARTED ************************');
+// logger.info('**************  http://' + host + ':' + port +
+// 	'  ******************');
+// server.timeout = 240000;
+
+// function getErrorMessage(field) {
+// 	var response = {
+// 		success: false,
+// 		message: field + ' field is missing or Invalid in the request'
+// 	};
+// 	return response;
+// }
 
 
 global.Layers = require('./application-utilities/layers').Express;
