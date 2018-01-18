@@ -134,7 +134,8 @@ module.exports = function() {
             res.send(json.payload.data);
             }		
             logger.debug("success");
-            res.send("success");
+            // res.send("success");
+            res.send(message);            
         });
 
         // callback(null, "allset");

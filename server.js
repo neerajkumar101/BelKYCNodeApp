@@ -87,7 +87,7 @@ app.use(function(req, res, next) {
 			// for the downstream code to use
 			req.username = decoded.username;
 			req.orgname = decoded.orgName;
-			logger.debug(util.format('Decoded from JWT token: username - %s, orgname - %s', decoded.username, decoded.orgName));
+			logger.debug(util.format('Decoded from JWT token: username - %s, orgname - %s', decoded.userName, decoded.orgName));
 			return next();
 		}
 	});

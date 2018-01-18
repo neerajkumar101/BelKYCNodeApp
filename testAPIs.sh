@@ -159,7 +159,7 @@ curl -s -X GET http://localhost:4000/api/v1/channels/mychannel/transactions/$TRX
   -H "content-type: application/json"
 echo
 echo
-eb43531f34c7a9c8b2e6323797910e392f6ac8d0e4da79cbb221806cf48f44cb
+
 ############################################################################
 ### TODO: What to pass to fetch the Block information
 ############################################################################
