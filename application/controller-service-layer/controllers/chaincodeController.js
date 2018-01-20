@@ -142,8 +142,6 @@ module.exports = function() {
     
     }
 
-
-
     return {
         installChaincode: installChaincode,
         instantiateChaincode : instantiateChaincode,

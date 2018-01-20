@@ -3,7 +3,7 @@ var timestamps = require('mongoose-timestamp');
 var mongoose = require('mongoose')
 
 var UserSchema = new mongooseSchema({
-    fullName: {
+    userName: {
         type: String,
         default: 'Guest',
         required: false,
@@ -23,17 +23,18 @@ var UserSchema = new mongooseSchema({
         required: false,
         trim: true
     },
-    mobile: {
-        type: Number,
-        requried: true,
+    jwtHash: {
+        type: String,
+        requried: false,
         default: '',
         trim: true
     },
-    // salt: {
-    //     type: String,
-    //     default: '',
-    //     trim: true
-    // },
+    pubKey: {
+        type: String,
+        requried: false,
+        default: '',
+        trim: true
+    },
     // accountLocked: {
     //     type: Boolean,
     //     default: true,

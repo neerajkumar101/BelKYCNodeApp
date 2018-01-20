@@ -5,6 +5,10 @@ logger.setLevel('User');
 var path = require('path');
 var util = require('util');
 var fs = require('fs-extra');
+var randomStringGenerator = ("randomstring");
+
+var stringHash = require("string-hash");
+
 var User = require('fabric-client/lib/User.js');
 var crypto = require('crypto');
 var copService = require('fabric-ca-client');
@@ -26,14 +30,14 @@ userService = function(app) {
 
 userService.prototype = new BaseService();
 
-userService.prototype.saveUser = function(callback) {
+userService.prototype.saveUser = function(userName, email, secret, jwt, pubKey, callback) {
 
         var userData = new domain.User({
-            fullName: "mobile",
-            email: "vgh@g.com",
-            password: "5678765456765rfvbhgfdc",
-            mobile:876545678
-
+            userName: userName,
+            email: email,
+            password: secret,
+			jwtHash: jwt,
+			pubKey: pubKey
         });
         console.log("ss-------------------", userData);
 
@@ -51,7 +55,7 @@ userService.prototype.saveUser = function(callback) {
 
 var getAdminUser = function(userOrg) {
 	var users = hfc.getConfigSetting('admins');
-	var userName = users[0].userName;
+	var userName = users[0].username; // do not modify this username
 	var password = users[0].secret;
 	var member;
 	var client = helper.getClientForOrg(userOrg);
@@ -116,6 +120,11 @@ userService.prototype.getRegisteredUsers = function(userName, userOrg, isJson) {
 				}).then((secret) => {
 					enrollmentSecret = secret;
 					logger.debug(userName + ' registered successfully');
+
+
+					// saveUser(userName, email, secret, jwt, pubKey, callback);
+					
+
 					return caClient.enroll({
 						enrollmentID: userName,
 						enrollmentSecret: secret
