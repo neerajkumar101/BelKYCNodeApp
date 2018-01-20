@@ -55,7 +55,7 @@ channelService.prototype.createChannel = function(channelName, channelConfigPath
 
 	//Acting as a client in the given organization provided with "orgName" param
 	// return helper.getOrgAdmin(orgName).then((admin) => {
-		return app.services.userService.getOrgAdmin(orgName).then((admin) => {	
+	return app.services.userService.getOrgAdmin(orgName).then((admin) => {	
 
 		logger.debug(util.format('Successfully acquired admin user for the organization "%s"', orgName));
 		// sign the channel config bytes as "endorsement", this is required by

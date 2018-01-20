@@ -28,8 +28,6 @@ userService.prototype = new BaseService();
 
 userService.prototype.saveUser = function(callback) {
 
-    // db interaction placed here
-    // var getRegisteredUsers = function(userName, userOrg, isJson) {
         var userData = new domain.User({
             fullName: "mobile",
             email: "vgh@g.com",
@@ -59,7 +57,7 @@ var getAdminUser = function(userOrg) {
 	var client = helper.getClientForOrg(userOrg);
 
 	return hfc.newDefaultKeyValueStore({
-		path: helper.getKeyStoreForOrg(getOrgName(userOrg))
+		path: helper.getKeyStoreForOrg(helper.getOrgName(userOrg))
 	}).then((store) => {
 		client.setStateStore(store);
 		// clearing the user context before switching
@@ -78,7 +76,7 @@ var getAdminUser = function(userOrg) {
 					logger.info('Successfully enrolled user \'' + userName + '\'');
 					member = new User(userName);
 					member.setCryptoSuite(client.getCryptoSuite());
-					return member.setEnrollment(enrollment.key, enrollment.certificate, getMspID(userOrg));
+					return member.setEnrollment(enrollment.key, enrollment.certificate, helper.getMspID(userOrg));
 				}).then(() => {
 					return client.setUserContext(member);
 				}).then(() => {
