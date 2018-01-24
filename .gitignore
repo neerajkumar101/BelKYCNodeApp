@@ -1,0 +1,9 @@
+node_modules
+.idea
+/application/controller-service-layer/artifacts.1
+
+package-lock.json
+
+# exception to the rule
+# !server/uploads/.gitkeep 
+# !logs/.gitkeep 
