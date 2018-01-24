@@ -80,8 +80,11 @@ Layers.prototype.setupRoute = function(path, handler) {
  * handlers are extinguished at which point a 404 will be thrown.
  */
 function setupWiring(server,router, wiring) {
-	var self = this;
-	console.log(wiring);
+    var self = this;
+    
+    //spits out the  entire wiring 
+    // console.log(wiring);
+    
     for (var path in wiring) {
         var handlers = wiring[path];
         if (handlers instanceof Array) {

@@ -54,8 +54,8 @@ channelService.prototype.createChannel = function(channelName, channelConfigPath
 	var channelConfig = client.extractChannelConfig(envelope);
 
 	//Acting as a client in the given organization provided with "orgName" param
-	// return helper.getOrgAdmin(orgName).then((admin) => {
-	return app.services.userService.getOrgAdmin(orgName).then((admin) => {	
+	return helper.getOrgAdmin(orgName).then((admin) => {
+	// return app.services.userService.getOrgAdmin(orgName).then((admin) => {	
 
 		logger.debug(util.format('Successfully acquired admin user for the organization "%s"', orgName));
 		// sign the channel config bytes as "endorsement", this is required by
@@ -128,8 +128,8 @@ channelService.prototype.joinChannel = function(channelName, peers, username, or
 	var channel = helper.getChannelForOrg(orgName);
 	var eventhubs = [];
 
-	// return helper.getOrgAdmin(orgName).then((admin) => {
-	return app.services.userService.getOrgAdmin(orgName).then((admin) => {		
+	return helper.getOrgAdmin(orgName).then((admin) => {
+	// return app.services.userService.getOrgAdmin(orgName).then((admin) => {		
 		logger.info(util.format('received member object for admin of the organization "%s": ', orgName));
 		tx_id = client.newTransactionID();
 		let request = {

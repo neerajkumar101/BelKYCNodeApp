@@ -16,13 +16,13 @@ queryService = function(app) {
 
 queryService.prototype = new BaseService();
 
-queryService.prototype.queryChaincode = function(peer, channelName, chaincodeName, args, fcn, userName, orgName) {
+queryService.prototype.queryChaincode = function(peer, channelName, chaincodeName, args, fcn, username, orgName) {
     
     var channel = helper.getChannelForOrg(orgName);
 	var client = helper.getClientForOrg(orgName);
 	var target = buildTarget(peer, orgName);
-	// return helper.getRegisteredUsers(userName, orgName).then((user) => {
-	return app.services.userService.getRegisteredUsers(userName, orgName).then((user) => {
+	return helper.getRegisteredUsers(username, orgName).then((user) => {
+	// return app.services.userService.getRegisteredUsers(username, orgName).then((user) => {
 		
 		tx_id = client.newTransactionID();
 		// send query
@@ -37,8 +37,8 @@ queryService.prototype.queryChaincode = function(peer, channelName, chaincodeNam
 		logger.debug('printing transaction id end');
 		return channel.queryByChaincode(request, target);
 	}, (err) => {
-		logger.info('Failed to get submitter \''+userName+'\'');
-		return 'Failed to get submitter \''+userName+'\'. Error: ' + err.stack ? err.stack :
+		logger.info('Failed to get submitter \''+username+'\'');
+		return 'Failed to get submitter \''+username+'\'. Error: ' + err.stack ? err.stack :
 			err;
 	}).then((response_payloads) => {
 		if (response_payloads) {
@@ -64,17 +64,17 @@ queryService.prototype.queryChaincode = function(peer, channelName, chaincodeNam
 	});
 }
 
-queryService.prototype.queryBlockByNumber = function(peer, blockNumber, userName, orgName){
+queryService.prototype.queryBlockByNumber = function(peer, blockNumber, username, orgName){
 
     var target = buildTarget(peer, orgName);
 	var channel = helper.getChannelForOrg(orgName);
 
-	// return helper.getRegisteredUsers(userName, orgName).then((member) => {
-	return app.services.userService.getRegisteredUsers(userName, orgName).then((member) => {		
+	return helper.getRegisteredUsers(username, orgName).then((member) => {
+	// return app.services.userService.getRegisteredUsers(username, orgName).then((member) => {		
 		return channel.queryBlock(parseInt(blockNumber), target);
 	}, (err) => {
-		logger.info('Failed to get submitter "' + userName + '"');
-		return 'Failed to get submitter "' + userName + '". Error: ' + err.stack ?
+		logger.info('Failed to get submitter "' + username + '"');
+		return 'Failed to get submitter "' + username + '". Error: ' + err.stack ?
 			err.stack : err;
 	}).then((response_payloads) => {
 		if (response_payloads) {
@@ -96,17 +96,17 @@ queryService.prototype.queryBlockByNumber = function(peer, blockNumber, userName
 
 }
 
-queryService.prototype.queryTransactionByID = function(peer, trxnID, userName, orgName){
+queryService.prototype.queryTransactionByID = function(peer, trxnID, username, orgName){
 
     var target = buildTarget(peer, orgName);
 	var channel = helper.getChannelForOrg(orgName);
 
-	// return helper.getRegisteredUsers(userName, orgName).then((member) => {
-	return app.services.userService.getRegisteredUsers(userName, orgName).then((member) => {		
+	return helper.getRegisteredUsers(username, orgName).then((member) => {
+	// return app.services.userService.getRegisteredUsers(username, orgName).then((member) => {		
 		return channel.queryTransaction(trxnID, target);
 	}, (err) => {
-		logger.info('Failed to get submitter "' + userName + '"');
-		return 'Failed to get submitter "' + userName + '". Error: ' + err.stack ?
+		logger.info('Failed to get submitter "' + username + '"');
+		return 'Failed to get submitter "' + username + '". Error: ' + err.stack ?
 			err.stack : err;
 	}).then((response_payloads) => {
 		if (response_payloads) {
@@ -126,18 +126,18 @@ queryService.prototype.queryTransactionByID = function(peer, trxnID, userName, o
 	});
     
 }
-queryService.prototype.queryBlockByHash = function(peer, hash, userName, orgName){
+queryService.prototype.queryBlockByHash = function(peer, hash, username, orgName){
 
     var target = buildTarget(peer, orgName);
 	var channel = helper.getChannelForOrg(orgName);
 
-	// return helper.getRegisteredUsers(userName, orgName).then((member) => {
-	return app.services.userService.getRegisteredUsers(userName, orgName).then((member) => {
+	return helper.getRegisteredUsers(username, orgName).then((member) => {
+	// return app.services.userService.getRegisteredUsers(username, orgName).then((member) => {
 		
 		return channel.queryBlockByHash(Buffer.from(hash), target);
 	}, (err) => {
-		logger.info('Failed to get submitter "' + userName + '"');
-		return 'Failed to get submitter "' + userName + '". Error: ' + err.stack ?
+		logger.info('Failed to get submitter "' + username + '"');
+		return 'Failed to get submitter "' + username + '". Error: ' + err.stack ?
 			err.stack : err;
 	}).then((response_payloads) => {
 		if (response_payloads) {
@@ -157,18 +157,18 @@ queryService.prototype.queryBlockByHash = function(peer, hash, userName, orgName
 	});
     
 }
-queryService.prototype.queryChainInfo = function(peer, userName, orgName){
+queryService.prototype.queryChainInfo = function(peer, username, orgName){
 
     var target = buildTarget(peer, orgName);
 	var channel = helper.getChannelForOrg(orgName);
 
-	// return helper.getRegisteredUsers(userName, orgName).then((member) => {
-	return app.services.userService.getRegisteredUsers(userName, orgName).then((member) => {
+	return helper.getRegisteredUsers(username, orgName).then((member) => {
+	// return app.services.userService.getRegisteredUsers(username, orgName).then((member) => {
 		
 		return channel.queryInfo(target);
 	}, (err) => {
-		logger.info('Failed to get submitter "' + userName + '"');
-		return 'Failed to get submitter "' + userName + '". Error: ' + err.stack ?
+		logger.info('Failed to get submitter "' + username + '"');
+		return 'Failed to get submitter "' + username + '". Error: ' + err.stack ?
 			err.stack : err;
 	}).then((blockchainInfo) => {
 		if (blockchainInfo) {
@@ -192,14 +192,14 @@ queryService.prototype.queryChainInfo = function(peer, userName, orgName){
 	});
     
 }
-queryService.prototype.queryInstalledChaincodes = function(peer, type, userName, orgName){
+queryService.prototype.queryInstalledChaincodes = function(peer, type, username, orgName){
 
     var target = buildTarget(peer, orgName);
 	var channel = helper.getChannelForOrg(orgName);
 	var client = helper.getClientForOrg(orgName);
 
-	// return helper.getOrgAdmin(orgName).then((member) => {
-	return app.services.userService.getOrgAdmin(orgName).then((member) => {
+	return helper.getOrgAdmin(orgName).then((member) => {
+	// return app.services.userService.getOrgAdmin(orgName).then((member) => {
 		
 		if (type === 'installed') {
 			return client.queryInstalledChaincodes(target);
@@ -207,8 +207,8 @@ queryService.prototype.queryInstalledChaincodes = function(peer, type, userName,
 			return channel.queryInstantiatedChaincodes(target);
 		}
 	}, (err) => {
-		logger.info('Failed to get submitter "' + userName + '"');
-		return 'Failed to get submitter "' + userName + '". Error: ' + err.stack ?
+		logger.info('Failed to get submitter "' + username + '"');
+		return 'Failed to get submitter "' + username + '". Error: ' + err.stack ?
 			err.stack : err;
 	}).then((response) => {
 		if (response) {
@@ -241,20 +241,20 @@ queryService.prototype.queryInstalledChaincodes = function(peer, type, userName,
 	});
     
 }
-queryService.prototype.queryChannels = function(peer, userName, orgName){
+queryService.prototype.queryChannels = function(peer, username, orgName){
 
     var target = buildTarget(peer, orgName);
 	var channel = helper.getChannelForOrg(orgName);
 	var client = helper.getClientForOrg(orgName);
 
-	// return helper.getRegisteredUsers(userName, orgName).then((member) => {
-	return app.services.userService.getRegisteredUsers(userName, orgName).then((member) => {
+	return helper.getRegisteredUsers(username, orgName).then((member) => {
+	// return app.services.userService.getRegisteredUsers(username, orgName).then((member) => {
 		
 		//channel.setPrimaryPeer(targets[0]);
 		return client.queryChannels(target);
 	}, (err) => {
-		logger.info('Failed to get submitter "' + userName + '"');
-		return 'Failed to get submitter "' + userName + '". Error: ' + err.stack ?
+		logger.info('Failed to get submitter "' + username + '"');
+		return 'Failed to get submitter "' + username + '". Error: ' + err.stack ?
 			err.stack : err;
 	}).then((response) => {
 		if (response) {

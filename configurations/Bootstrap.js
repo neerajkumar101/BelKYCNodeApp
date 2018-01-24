@@ -38,11 +38,11 @@
 
     // code to start the server
     function bootApplication() {
-        console.log("Express server listening on port %d in %s mode");
-        console.log("loading files succesfully")
-        console.log("server started on port 4000 ...")
-        console.log("...")
-        console.log("done .!!")
+        // console.log("Express server listening on port %d in %s mode");
+        // console.log("loading files succesfully")
+        // console.log("server started on port 4000 ...")
+        // console.log("...")
+        // console.log("done .!!")
 
         // app.listen(3003, function() {
         app.listen(4000, function() {

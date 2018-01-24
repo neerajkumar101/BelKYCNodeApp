@@ -7,15 +7,15 @@
       switch (process.env.NODE_ENV) {
           case 'development':
               var db = mongoose.connect('mongodb://localhost/BelPrivDatabase');
-              return checkMongooseConnection(db)
+              return checkMongooseConnection(db);
 
           case 'production':
               var db = mongoose.connect('mongodb://localhost/BelPrivDatabase', options);
-              return checkMongooseConnection(db)
+              return checkMongooseConnection(db);
 
           default:
               var db = mongoose.connect('mongodb://localhost/BelPrivDatabase');
-              return checkMongooseConnection(db)
+              return checkMongooseConnection(db);
       }
   }
 

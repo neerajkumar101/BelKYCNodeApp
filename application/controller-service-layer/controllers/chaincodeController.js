@@ -11,7 +11,7 @@ module.exports = function() {
         var chaincodeName = req.body.chaincodeName;
         var chaincodePath = req.body.chaincodePath;
         var chaincodeVersion = req.body.chaincodeVersion;
-        var userName = req.user.userName;
+        var username = req.user.username;
         var orgName = req.user.orgName;
 
 
@@ -37,7 +37,7 @@ module.exports = function() {
         }
 
         this.services.chaincodeService.installChaincode(peers, chaincodeName, chaincodePath,
-            chaincodeVersion, userName, orgName).then(function(message) {
+            chaincodeVersion, username, orgName).then(function(message) {
             res.send(message);
         });
 
@@ -54,7 +54,7 @@ module.exports = function() {
         var chaincodeName = req.body.chaincodeName;
         var chaincodeVersion = req.body.chaincodeVersion;
         var channelName = req.params.channelName;
-        var userName = req.user.userName;
+        var username = req.user.username;
         var orgName = req.user.orgName;
 
         var fcn = req.body.fcn;
@@ -81,7 +81,7 @@ module.exports = function() {
             return;
         }
 
-        this.services.chaincodeService.instantiateChaincode(channelName, chaincodeName, chaincodeVersion, fcn, args, userName, orgName)
+        this.services.chaincodeService.instantiateChaincode(channelName, chaincodeName, chaincodeVersion, fcn, args, username, orgName)
         .then(function(message) {
             res.send(message);
         });
@@ -101,7 +101,7 @@ module.exports = function() {
         var channelName = req.params.channelName;
         var fcn = req.body.fcn;
         var args = req.body.args;
-        var userName = req.user.userName;
+        var username = req.user.username;
         var orgName = req.user.orgName;
 
         logger.debug('channelName  : ' + channelName);
@@ -125,7 +125,7 @@ module.exports = function() {
             return;
         }
     
-        this.services.chaincodeService.invokeChaincode(peers, channelName, chaincodeName, fcn, args, userName, orgName)
+        this.services.chaincodeService.invokeChaincode(peers, channelName, chaincodeName, fcn, args, username, orgName)
         .then(function(message) {
             let json = message.toString('utf-8');
             if(json.payload){

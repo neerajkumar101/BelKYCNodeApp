@@ -12,6 +12,14 @@ module.exports = function(app) {
 				json: views.jsonView
 			}
 		}],
+		"/api/v1/users/fetch/:uuid": [{
+			method: "GET",
+			action: app.controllers.userController.getUserByUuid,
+			middleware: [],
+			views: {
+				json: views.jsonView
+			}
+		}],
 		
 		"/api/v1/channels": [{
 			method: "GET",
@@ -116,15 +124,6 @@ module.exports = function(app) {
 			views: {
 				json: views.jsonView
 			}
-		}],
-		"/api/v1/saveUser": [{
-			method: "GET",
-			action: app.controllers.userController.saveUser,
-			middleware: [],
-			views: {
-				json: views.jsonView
-			}
-		}],
-		
+		}],		
 	};
 };

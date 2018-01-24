@@ -13,7 +13,9 @@ var fs = require('fs'),
  * @param options An optional options object.
  */
 function loadLayers(server,router, rootPath, options) {
-	console.log("in load  layers :-->");
+
+	// console.log("in load  layers :-->");
+    
     options = merger(defaults, options);
     getLayers(rootPath).forEach(function(layer) {
         if (!server[layer]) {

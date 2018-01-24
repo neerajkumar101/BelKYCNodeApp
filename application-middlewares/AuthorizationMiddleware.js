@@ -3,7 +3,7 @@
  * This module is for the authorization process . Called as middleware function to decide whether user have enough authority to access the 
  *
  */
-var async = require('async')
+var async = require('async');
 
 module.exports.AuthorizationMiddleware = (function() {
 
@@ -18,7 +18,6 @@ module.exports.AuthorizationMiddleware = (function() {
             _id: results.authorizationTokenObject.user,
             deleted: false
         }, function(err, userObject) {
-
             if (userObject) {
                 if (roleInAccessLevel.indexOf(userObject.role) > -1) {
                     authorized = true
@@ -32,9 +31,7 @@ module.exports.AuthorizationMiddleware = (function() {
 
             }
         })
-
     }
-
 
     /*
      * find User and its role using authenticationToken. 
@@ -86,6 +83,7 @@ module.exports.AuthorizationMiddleware = (function() {
             }
         }
     }
+
     var updateUserTime = function(next, results, req, res) {
         Logger.info("control in the update user active time" + results.authorizationTokenObject.user);
         var updated = false;
@@ -102,6 +100,7 @@ module.exports.AuthorizationMiddleware = (function() {
 
         //        Login.updateOne({name:name},{$set: {role:role,password:password}},
     }
+
     var lastActiveTime = function() {
             return function(req, res, next) {
                 var authToken = req.get("X-Auth-Token");

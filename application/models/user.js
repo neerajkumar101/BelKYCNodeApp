@@ -3,13 +3,17 @@ var timestamps = require('mongoose-timestamp');
 var mongoose = require('mongoose')
 
 var UserSchema = new mongooseSchema({
-    userName: {
+    uuid: {
+        type: String,
+        default: '',
+        required: true,
+        trim: true
+    },
+    username: {
         type: String,
         default: 'Guest',
         required: false,
-        // ref: 'Events',
         trim: true,
-        // validate: [stringNotNull, "Full name is required."]
     },
     email: {
         type: String,
@@ -35,18 +39,13 @@ var UserSchema = new mongooseSchema({
         default: '',
         trim: true
     },
-    // accountLocked: {
-    //     type: Boolean,
-    //     default: true,
-    //     required: true,
-    //     trim: true
-    // },
-    // isAccountActive: {
-    //     type: Boolean,
-    //     default: true,
-    //     required: true,
-    //     trim: true
-    // },
+    userOrg: {
+        type: String,
+        default: '',
+        required: false,
+        trim: true,
+    },
+    
     // isEmailVerify: {
     //     type: Boolean,
     //     default: false,

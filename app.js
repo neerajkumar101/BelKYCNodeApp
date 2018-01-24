@@ -1,7 +1,7 @@
 global.cors = require('cors');
 
 var express = require('express');
-console.log("cors is already running")
+// console.log("cors is already running")
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var multipart = require('connect-multiparty');
@@ -15,7 +15,7 @@ app.use(cors());
 global.errorHandler = require('errorhandler');
 global.publicdir = __dirname;
 global.async = require('async');
-global.path = require('path')
+global.path = require('path');
 global.router = express.Router();
 global.uuid = require('node-uuid');
 global.mongooseSchema = mongoose.Schema;
@@ -37,7 +37,9 @@ var hfc = require('fabric-client');
 var host = process.env.HOST || hfc.getConfigSetting('host');
 var port = process.env.PORT || hfc.getConfigSetting('port');
 
-console.log("configurationHolder", configurationHolder.Bootstrap)
+// spits out the configuratio holder
+// console.log("configurationHolder", configurationHolder.Bootstrap);
+
 app.use(errorHandler());
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -53,17 +55,17 @@ app.use(bodyParser.urlencoded({
 	extended: false
 }));
 
-
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// SET CONFIGURATONS ////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
 // set secret variable
 app.set('secret', 'thisismysecret');
+
 app.use(expressJWT({
 	secret: 'thisismysecret'
 }).unless({
-	path: ['/api/v1/users']
+	path: ['/api/v1/users', '/api/v1/users/fetch/:uuid']
 }));
 
 app.use(bearerToken());

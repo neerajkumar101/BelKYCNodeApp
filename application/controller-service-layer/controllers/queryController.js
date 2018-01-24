@@ -10,7 +10,7 @@ module.exports = function() {
         let args = req.query.args;
         let fcn = req.query.fcn;
         let peer = req.query.peer;
-        var userName = req.user.userName;
+        var username = req.user.username;
         var orgName = req.user.orgName;
     
         logger.debug('channelName : ' + channelName);
@@ -37,7 +37,7 @@ module.exports = function() {
         args = args.replace(/'/g, '"');
         args = JSON.parse(args);
         logger.debug(args);
-        this.services.queryService.queryChaincode(peer, channelName, chaincodeName, args, fcn, userName, orgName)
+        this.services.queryService.queryChaincode(peer, channelName, chaincodeName, args, fcn, username, orgName)
         .then(function(message) {
             res.send(message);
         });
@@ -52,7 +52,7 @@ module.exports = function() {
 
         let blockId = req.params.blockId;
         let peer = req.query.peer;
-        var userName = req.user.userName;
+        var username = req.user.username;
         var orgName = req.user.orgName;
 
         logger.debug('channelName : ' + req.params.channelName);
@@ -63,7 +63,7 @@ module.exports = function() {
             return;
         }
     
-        this.services.queryService.queryBlockByNumber(peer, blockId, userName, orgName)
+        this.services.queryService.queryBlockByNumber(peer, blockId, username, orgName)
             .then(function(message) {
                 res.send(message);
             });
@@ -81,7 +81,7 @@ module.exports = function() {
         logger.debug('channelName : ' + req.params.channelName);
         let trxnId = req.params.trxnId;
         let peer = req.query.peer;
-        var userName = req.user.userName;
+        var username = req.user.username;
         var orgName = req.user.orgName;
 
         if (!trxnId) {
@@ -89,7 +89,7 @@ module.exports = function() {
             return;
         }
     
-        this.services.queryService.queryTransactionByID(peer, trxnId, userName, orgName)
+        this.services.queryService.queryTransactionByID(peer, trxnId, username, orgName)
             .then(function(message) {
                 res.send(message);
             });
@@ -104,7 +104,7 @@ module.exports = function() {
         logger.debug('channelName : ' + req.params.channelName);
         let hash = req.query.hash;
         let peer = req.query.peer;
-        var userName = req.user.userName;
+        var username = req.user.username;
         var orgName = req.user.orgName;
 
         if (!hash) {
@@ -112,7 +112,7 @@ module.exports = function() {
             return;
         }
     
-        this.services.queryService.queryBlockByHash(peer, hash, userName, orgName).then(
+        this.services.queryService.queryBlockByHash(peer, hash, username, orgName).then(
             function(message) {
                 res.send(message);
             });
@@ -129,10 +129,10 @@ module.exports = function() {
             '================ GET CHANNEL INFORMATION ======================');
         logger.debug('channelName : ' + req.params.channelName);
         let peer = req.query.peer;
-        var userName = req.user.userName;
+        var username = req.user.username;
         var orgName = req.user.orgName;
     
-        this.services.queryService.queryChainInfo(peer, userName, orgName).then(
+        this.services.queryService.queryChainInfo(peer, username, orgName).then(
             function(message) {
                 res.send(message);
             });       
@@ -146,7 +146,7 @@ module.exports = function() {
         
         var peer = req.query.peer;
         var installType = req.query.type;
-        var userName = req.user.userName;
+        var username = req.user.username;
         var orgName = req.user.orgName;
 
         //TODO: add Constnats
@@ -158,7 +158,7 @@ module.exports = function() {
                 '================ GET INSTANTIATED CHAINCODES ======================');
         }
     
-        this.services.queryService.queryInstalledChaincodes(peer, installType, userName, orgName)
+        this.services.queryService.queryInstalledChaincodes(peer, installType, username, orgName)
         .then(function(message) {
             res.send(message);
         });
@@ -173,7 +173,7 @@ module.exports = function() {
         logger.debug('================ GET CHANNELS ======================');
         logger.debug('peer: ' + req.query.peer);
         var peer = req.query.peer;
-        var userName = req.user.userName;
+        var username = req.user.username;
         var orgName = req.user.orgName;
 
         if (!peer) {
@@ -181,7 +181,7 @@ module.exports = function() {
             return;
         }
     
-        this.services.queryService.queryChannels(peer, userName, orgName)
+        this.services.queryService.queryChannels(peer, username, orgName)
         .then(function(
             message) {
             res.send(message);

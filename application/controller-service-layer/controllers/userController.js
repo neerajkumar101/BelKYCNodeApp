@@ -6,13 +6,13 @@ var hfc = require('fabric-client');
 module.exports = function() {
     var registerUsers = function(req, res, callback) {
 
-        var userName = req.body.userName;
+        var username = req.body.username;
         var orgName = req.body.orgName;
         logger.debug('End point : /api/v1/users');
-        logger.debug('User name : ' + userName);
+        logger.debug('User name : ' + username);
         logger.debug('Org name  : ' + orgName);
-        if (!userName) {
-            res.json(getErrorMessage('\'userName\''));
+        if (!username) {
+            res.json(getErrorMessage('\'username\''));
             return;
         }
         if (!orgName) {
@@ -21,11 +21,12 @@ module.exports = function() {
         }
         var token = jwt.sign({
             exp: Math.floor(Date.now() / 1000) + parseInt(hfc.getConfigSetting('jwt_expiretime')),
-            userName: userName,
+            username: username,
             orgName: orgName
         }, app.get('secret'));
-        // helper.getRegisteredUsers(userName, orgName, true).then(function(response) {
-        this.services.userService.getRegisteredUsers(userName, orgName, true).then(function(response) {
+
+        helper.getRegisteredUsers(username, orgName, true, token).then(function(response) {
+        // this.services.userService.getRegisteredUsers(username, orgName, true).then(function(response) {
             
             if (response && typeof response !== 'string') {
                 response.token = token;
@@ -36,16 +37,37 @@ module.exports = function() {
                     message: response
                 });
             }
+        }).catch(function(err){
+            throw new Error(err.stack ? err.stack :	err);
         });
 
     }
 
-    function saveUser(req, res, callback){
-        this.services.userService.saveUser(callback)
+    // function persistUser(req, res, callback){
+    //     this.services.userService.persistUser(callback);
+    // }
+
+    function getUserByUuid (req, res, callback) {
+
+        var uuid = req.params.uuid;
+
+        logger.debug('Fetch End point : /api/v1/users/:uuid');
+        
+        if (!uuid) {
+            res.json(getErrorMessage('\'uuid\''));
+            return;
+        }
+        helper.getUserByUuid(req.query.uuid)
+        .then(function(message){
+            res.send(message);
+        }).catch(function(err){
+            throw new Error(err.stack ? err.stack :	err);
+        });
     }
 
     return {
         registerUsers: registerUsers,
-        saveUser:saveUser
+        // persistUser: persistUser,
+        getUserByUuid: getUserByUuid
     }
 };

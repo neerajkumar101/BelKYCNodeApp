@@ -9,7 +9,7 @@ module.exports = function() {
         logger.debug('End point : /channels');
         var channelName = req.body.channelName;
         var channelConfigPath = req.body.channelConfigPath;
-        var userName = req.user.userName;
+        var username = req.user.username;
         var orgName = req.user.orgName;
 
 
@@ -24,7 +24,7 @@ module.exports = function() {
             return;
         }
     
-        this.services.channelService.createChannel(channelName, channelConfigPath, userName, orgName, callback)
+        this.services.channelService.createChannel(channelName, channelConfigPath, username, orgName, callback)
         .then(function(message) {
             res.send(message);
         });
@@ -41,7 +41,7 @@ module.exports = function() {
         logger.info('<<<<<<<<<<<<<<<<< J O I N  C H A N N E L >>>>>>>>>>>>>>>>>');
         var channelName = req.params.channelName;
         var peers = req.body.peers;
-        var userName = req.user.userName;
+        var username = req.user.username;
         var orgName = req.user.orgName;
 
         logger.debug('channelName : ' + channelName);
@@ -55,7 +55,7 @@ module.exports = function() {
             return;
         }
     
-        this.services.channelService.joinChannel(channelName, peers, userName, orgName)
+        this.services.channelService.joinChannel(channelName, peers, username, orgName)
         .then(function(message) {
             res.send(message);
         });
