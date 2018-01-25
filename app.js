@@ -32,6 +32,9 @@ var expressJWT = require('express-jwt');
 var jwt = require('jsonwebtoken');
 var bearerToken = require('express-bearer-token');
 
+
+require('dotenv').config({ path: __dirname + '/.env' });
+
 require('./application/controller-service-layer/config.js');
 var hfc = require('fabric-client');
 var host = process.env.HOST || hfc.getConfigSetting('host');
@@ -60,10 +63,12 @@ app.use(bodyParser.urlencoded({
 ///////////////////////////////////////////////////////////////////////////////
 
 // set secret variable
-app.set('secret', 'thisismysecret');
+// app.set('secret', 'thisismysecret');
+app.set('secret', process.env.SESSION_SECRET);
 
 app.use(expressJWT({
-	secret: 'thisismysecret'
+	// secret: 
+	secret: process.env.SESSION_SECRET
 }).unless({
 	path: ['/api/v1/users', '/api/v1/users/fetch/:uuid']
 }));
