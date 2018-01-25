@@ -3,6 +3,7 @@ node_modules
 /application/controller-service-layer/artifacts.1
 
 package-lock.json
+.env
 
 # exception to the rule
 # !server/uploads/.gitkeep 
