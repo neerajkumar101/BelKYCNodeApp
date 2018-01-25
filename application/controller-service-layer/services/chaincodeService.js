@@ -1,7 +1,7 @@
 var path = require('path');
 var fs = require('fs');
 var util = require('util');
-var config = require('../config.json');
+// var config = require('../config.json');
 var helper = require('./helper.js');
 var hfc = require('fabric-client');
 var Peer = require('fabric-client/lib/Peer.js');

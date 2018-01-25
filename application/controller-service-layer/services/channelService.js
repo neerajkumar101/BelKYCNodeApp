@@ -16,7 +16,7 @@
 var util = require('util');
 var fs = require('fs');
 var path = require('path');
-var config = require('../config.json');
+// var config = require('../config.json');
 var helper = require('./helper.js');
 var BaseService = require('./BaseService');
 // var userService = require('./userService');

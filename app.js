@@ -35,7 +35,8 @@ var bearerToken = require('express-bearer-token');
 
 require('dotenv').config({ path: __dirname + '/.env' });
 
-require('./application/controller-service-layer/config.js');
+require('./app-dlt-configs/config.js');
+
 var hfc = require('fabric-client');
 var host = process.env.HOST || hfc.getConfigSetting('host');
 var port = process.env.PORT || hfc.getConfigSetting('port');
