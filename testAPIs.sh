@@ -132,6 +132,18 @@ TRX_ID=$(curl -s -X POST \
 }')
 echo "Transacton ID is $TRX_ID"
 echo
+
+echo "POST invoke chaincode on peers of Org1 and Org2"
+echo
+TRX_ID=$(curl -s -X POST \
+  http://localhost:4000/api/v1/channels/mychannel/chaincodes/mycc \
+  -H "authorization: Bearer $ORG1_TOKEN" \
+  -H "content-type: application/json" \
+  -d '{
+  "fcn":"init_document",
+  "args":["0001","adhaardoc0001","unverified", "o001", "bel"]
+}')
+echo "Transacton ID is $TRX_ID"
 echo
 
 echo "GET query chaincode on peer1 of Org1"

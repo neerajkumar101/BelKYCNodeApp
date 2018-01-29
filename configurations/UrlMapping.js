@@ -15,7 +15,7 @@ module.exports = function(app) {
 		"/api/v1/users/fetch/:uuid": [{
 			method: "GET",
 			action: app.controllers.userController.getUserByUuid,
-			middleware: [],
+			middleware: [configuration.security.authority("ROLE_MERCHANT")],
 			views: {
 				json: views.jsonView
 			}
