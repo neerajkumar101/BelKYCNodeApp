@@ -6,8 +6,8 @@ var path = require('path');
 var util = require('util');
 var fs = require('fs-extra');
 var User = require('fabric-client/lib/User.js');
-var crypto = require('crypto');
-var copService = require('fabric-ca-client');
+// var crypto = require('crypto');
+var caService = require('fabric-ca-client');
 var randomStringGenerator = require("randomstring");
 
 var hfc = require('fabric-client');
@@ -17,6 +17,8 @@ var ORGS = hfc.getConfigSetting('network-config');
 var clients = {};
 var channels = {};
 var caClients = {};
+
+var jwt = require('jsonwebtoken');
 
 // set up the client and channel objects for each org
 for (let key in ORGS) {
@@ -36,7 +38,7 @@ for (let key in ORGS) {
 		setupPeers(channel, key, client);
 
 		let caUrl = ORGS[key].ca;
-		caClients[key] = new copService(caUrl, null /*defautl TLS opts*/, '' /* default CA */, cryptoSuite);
+		caClients[key] = new caService(caUrl, null /*defautl TLS opts*/, '' /* default CA */, cryptoSuite);
 	}
 }
 
@@ -124,6 +126,19 @@ function newRemotes(names, forPeers, userOrg) {
 //-------------------------------------//
 // APIs
 //-------------------------------------//
+
+var generateUserToken = function(username, orgName, email, role, callback){
+	var token = jwt.sign({
+		exp: Math.floor(Date.now() / 1000) + parseInt(hfc.getConfigSetting('jwt_expiretime')),
+		username: username,
+		orgName: orgName,
+		email: email,
+		role: role
+	}, app.get('secret'));
+	
+	callback(null, token);
+}
+
 var getChannelForOrg = function(org) {
 	return channels[org];
 };
@@ -190,7 +205,7 @@ var getAdminUser = function(userOrg) {
 	});
 };
 
-var getRegisteredUsers = function(username, userOrg, isJson, jwtToken) {
+var getRegisteredUsers = function(username, userOrg, email, role, isJson, jwtToken) {
 	var member;
 	var client = getClientForOrg(userOrg);
 	var enrollmentSecret = null;
@@ -240,7 +255,7 @@ var getRegisteredUsers = function(username, userOrg, isJson, jwtToken) {
 					//retrieving public key for saving it to the database
 					getPublicKeyFromUsername(username, userOrg)
 					.then(function(publicKey){
-						persistUser(username, userOrg, 'somemail@email.com', member.secret, jwtToken, publicKey, (err, result) => {
+						persistUser(username, userOrg, email, role, member.secret, jwtToken, publicKey, (err, result) => {
 							if(err) throw err;
 						});
 					}).catch(function(err){
@@ -346,11 +361,12 @@ var getLogger = function(moduleName) {
 	return logger;
 };
 
-var persistUser = function(username, userOrg, email, secret, jwt, pubKey, callback) {
+var persistUser = function(username, userOrg, email, role,  secret, jwt, pubKey, callback) {
 	var userData = new domain.User({
 		uuid : randomStringGenerator.generate(),
 		username: username,
 		userOrg: userOrg, 
+		roleOfUser : role,
 		email: email,
 		password: secret,
 		jwtHash: jwt,
@@ -359,24 +375,36 @@ var persistUser = function(username, userOrg, email, secret, jwt, pubKey, callba
 
 	userData.save(function(err, result) {
 		if (err) {
-			console.log("errs", err)
+			console.log("errs", err);
 			callback(err, null)
 		} else {
-			console.log("next ")
-			callback(null, result)
+			callback(null, result);
 		}
 	});
 }
 
-var getUserByUuid = function (uuid){
-	return new Promise(function(resolve, reject){
+var getUserPublicKeyByUuid = function (uuid, callback){	
 		var query = domain.User.findOne({ 'uuid': uuid });
-		query.select('username jwtHash pubKey email password');
+		query.select('pubKey');
 		query.exec(function (err, result) {
-		  if (err) reject(err);
-		  resolve( result ) ;
+		  if (err) callback(err, null);
+			  
+		  purifyPublicKey(result.pubKey, (err, publicKey) => {
+			  if(err) callback(err, null);
+		  
+			result.pubKey = publicKey;
+		  	callback(null, result);
+		  });
+		  callback(null, result);
 		});
-	});
+}
+
+var purifyPublicKey = function(pubKey, callback) {
+	pubKey = pubKey.replace('-----BEGIN PUBLIC KEY-----', '')
+	.replace('-----END PUBLIC KEY-----', '')
+	.replace(/(\r\n|\n|\r)/gm, '');
+
+	callback(null, pubKey);
 }
 
 var getUserJwtHashPublicKeyByNameAndOrg = function (username, userOrg){
@@ -390,8 +418,6 @@ var getUserJwtHashPublicKeyByNameAndOrg = function (username, userOrg){
 	});
 }
 
-
-
 exports.getChannelForOrg = getChannelForOrg;
 exports.getClientForOrg = getClientForOrg;
 exports.getLogger = getLogger;
@@ -402,7 +428,5 @@ exports.newPeers = newPeers;
 exports.newEventHubs = newEventHubs;
 exports.getRegisteredUsers = getRegisteredUsers;
 exports.getOrgAdmin = getOrgAdmin;
-exports.getUserByUuid = getUserByUuid;
-// exports.getOrgName = getOrgName;
-// exports.getKeyStoreForOrg = getKeyStoreForOrg;
-// exports.readAllFiles = readAllFiles;
+exports.getUserPublicKeyByUuid = getUserPublicKeyByUuid;
+exports.generateUserToken = generateUserToken;

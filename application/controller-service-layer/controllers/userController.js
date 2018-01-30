@@ -1,16 +1,17 @@
-var helper = require('../services/helper.js');
-var logger = helper.getLogger('Helper');
-var jwt = require('jsonwebtoken');
 var hfc = require('fabric-client');
+var helper = require('../services/helper.js');
+var Logger = helper.getLogger('Helper');
 
 module.exports = function() {
     var registerUsers = function(req, res, callback) {
 
         var username = req.body.username;
         var orgName = req.body.orgName;
-        logger.debug('End point : /api/v1/users');
-        logger.debug('User name : ' + username);
-        logger.debug('Org name  : ' + orgName);
+        var email = req.body.email;
+        var role = req.body.role;
+        Logger.debug('End point : /api/v1/users');
+        Logger.debug('User name : ' + username);
+        Logger.debug('Org name  : ' + orgName);
         if (!username) {
             res.json(getErrorMessage('\'username\''));
             return;
@@ -19,55 +20,57 @@ module.exports = function() {
             res.json(getErrorMessage('\'orgName\''));
             return;
         }
-        var token = jwt.sign({
-            exp: Math.floor(Date.now() / 1000) + parseInt(hfc.getConfigSetting('jwt_expiretime')),
-            username: username,
-            orgName: orgName
-        }, app.get('secret'));
+        if (!email) {
+            res.json(getErrorMessage('\'email\''));
+            return;
+        }
+        if (!role) {
+            res.json(getErrorMessage('\'role\''));
+            return;
+        }
 
-        helper.getRegisteredUsers(username, orgName, true, token).then(function(response) {
-        // this.services.userService.getRegisteredUsers(username, orgName, true).then(function(response) {
-            
-            if (response && typeof response !== 'string') {
-                response.token = token;
-                res.json(response);
-            } else {
-                res.json({
-                    success: false,
-                    message: response
-                });
-            }
-        }).catch(function(err){
-            throw new Error(err.stack ? err.stack :	err);
+        helper.generateUserToken(username, orgName, email, role, (err, token) =>{
+            if(err) 
+                throw new Error(err.stack ? err.stack :	err);
+
+                helper.getRegisteredUsers(username, orgName, email, role, true, token).then(function(response) {
+                    // this.services.userService.getRegisteredUsers(username, orgName, true).then(function(response) {
+                        
+                        if (response && typeof response !== 'string') {
+                            response.token = token;
+                            res.json(response);
+                        } else {
+                            res.json({
+                                success: false,
+                                message: response
+                            });
+                        }
+                    }).catch(function(err){
+                        throw new Error(err.stack ? err.stack :	err);
+                    });
         });
-
     }
 
-    // function persistUser(req, res, callback){
-    //     this.services.userService.persistUser(callback);
-    // }
-
-    function getUserByUuid (req, res, callback) {
-
+    var getUserPublicKeyByUuid = function (req, res, callback) {
         var uuid = req.params.uuid;
-
-        logger.debug('Fetch End point : /api/v1/users/:uuid');
-        
+        Logger.debug('Fetch End point : /api/v1/publicKeys/fetch/:uuid');
         if (!uuid) {
             res.json(getErrorMessage('\'uuid\''));
             return;
         }
-        helper.getUserByUuid(req.query.uuid)
-        .then(function(message){
+        // if(req.authorized != undefined && req.authorized == true){
+        helper.getUserPublicKeyByUuid(uuid, (err, message) => {
+            if(err) throw new Error(err.stack ? err.stack :	err);
+
             res.send(message);
-        }).catch(function(err){
-            throw new Error(err.stack ? err.stack :	err);
         });
+        // } else {
+        //     res.send(req.error.message);
+        // }
     }
 
     return {
         registerUsers: registerUsers,
-        // persistUser: persistUser,
-        getUserByUuid: getUserByUuid
+        getUserPublicKeyByUuid: getUserPublicKeyByUuid
     }
 };

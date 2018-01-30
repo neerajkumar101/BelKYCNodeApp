@@ -15,7 +15,7 @@
      //Application specific intial program to execute when server starts
  configurationHolder.Bootstrap = require('./Bootstrap.js')
      // Application specific security authorization middleware
- configurationHolder.security = require('../application-middlewares/AuthorizationMiddleware').AuthorizationMiddleware;
+ global.configurationHolder.security = require('../application-middlewares/AuthorizationMiddleware').AuthorizationMiddleware;
      //UTILITY CLASSES
  global.url = require('../application-utilities/Domainurlapi.js').url;
 

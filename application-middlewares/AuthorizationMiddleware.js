@@ -1,11 +1,85 @@
 /*
  * @author Abhimanyu
  * This module is for the authorization process . Called as middleware function to decide whether user have enough authority to access the 
- *
  */
+var helper = require('../application/controller-service-layer/services/helper.js');
+var Logger = helper.getLogger('Authentication-Middleware');
 var async = require('async');
+var jwt = require('jsonwebtoken');
+var util = require('util');
+
 
 module.exports.AuthorizationMiddleware = (function() {
+
+    /**
+     * Verifies for valid usr tokens
+     */
+    var verifyUserToken = function(){
+        return function(req, res, next){
+            if (req.originalUrl.indexOf('/api/v1/users') >= 0) {
+                return next();
+            }
+        
+            var token = req.token;
+            jwt.verify(token, app.get('secret'), function(err, decoded) {
+                if (err) {
+                    res.send({
+                        success: false,
+                        message: 'Failed to authenticate token. Make sure to include the ' +
+                            'token returned from /users call in the authorization header ' +
+                            ' as a Bearer token'
+                    });
+                    return;
+                } else {
+                    req.username = decoded.username;
+                    req.orgname = decoded.orgName;
+                    Logger.debug(util.format('Decoded from JWT token: '));
+                    Logger.debug(util.format('username - %s', decoded.username));
+                    Logger.debug(util.format('orgName - %s', decoded.orgName));
+                    return next();
+                }
+            });
+    
+        }
+    }
+
+    var verifyUserTokenAndRole = function (accessLevel) {
+        // configurationHolder.config.accessLevels[accessLevel]
+        return function(req, res, next){
+            if (req.originalUrl.indexOf('/api/v1/users') >= 0) {
+                return next();
+            }
+        
+            var token = req.token;
+            jwt.verify(token, app.get('secret'), function(err, decoded) {
+                if (err) {
+                    res.send({
+                        success: false,
+                        message: 'Failed to authenticate token. Make sure to include the ' +
+                            'token returned from /users call in the authorization header ' +
+                            ' as a Bearer token'
+                    });
+                    return;
+                } else {
+                    req.username = decoded.username;
+                    req.orgname = decoded.orgName;
+
+                    if(accessLevel.indexOf(decoded.role) > -1){
+                        req.authorized = true;
+                        Logger.debug(util.format('Decoded from JWT token: '));
+                        Logger.debug(util.format('username - %s', decoded.username));
+                        Logger.debug(util.format('orgName - %s', decoded.orgName));
+                        return next();
+                    } else {
+                        req.error = new Error("Sorry!! You are not authorized to perform this action.")
+                        req.authorized = false;
+                        return next();
+                    }
+
+                }
+            });
+        }
+    }
 
     /*
      *  Verify user is authorized to access the functionality or not
@@ -124,8 +198,9 @@ module.exports.AuthorizationMiddleware = (function() {
             }
 
         }
-        //public methods are  return
     return {
+        verifyUserToken : verifyUserToken,
+        verifyUserTokenAndRole: verifyUserTokenAndRole,
         authority: authority,
         lastActiveTime: lastActiveTime
 

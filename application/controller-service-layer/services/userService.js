@@ -10,7 +10,7 @@ var stringHash = require("string-hash");
 
 var User = require('fabric-client/lib/User.js');
 var crypto = require('crypto');
-var copService = require('fabric-ca-client');
+var caService = require('fabric-ca-client');
 var helper = require('./helper.js');
 
 var hfc = require('fabric-client');
@@ -30,26 +30,24 @@ userService = function(app) {
 userService.prototype = new BaseService();
 
 // userService.prototype.persistUser = function(username, email, secret, jwt, pubKey, callback) {
+    // var userData = new domain.User({
+    //     username: username,
+    //     email: email,
+    //     password: secret,
+    //     jwtHash: jwt,
+    //     pubKey: pubKey
+    // });
+    // console.log("ss-------------------", userData);
 
-//         var userData = new domain.User({
-//             username: username,
-//             email: email,
-//             password: secret,
-// 			jwtHash: jwt,
-// 			pubKey: pubKey
-//         });
-//         console.log("ss-------------------", userData);
-
-//         userData.save(function(err, result) {
-//             if (err) {
-//                 console.log("errs", err)
-//                 callback(err, null)
-//             } else {
-//                 console.log("next ")
-//                 callback(null, result)
-//             }
-//         });
-
+    // userData.save(function(err, result) {
+    //     if (err) {
+    //         console.log("errs", err)
+    //         callback(err, null)
+    //     } else {
+    //         console.log("next ")
+    //         callback(null, result)
+    //     }
+    // });
 // }
 
 // var getAdminUser = function(userOrg) {
@@ -120,10 +118,8 @@ userService.prototype = new BaseService();
 // 					enrollmentSecret = secret;
 // 					logger.debug(username + ' registered successfully');
 
-
 // 					// persistUser(username, email, secret, jwt, pubKey, callback);
 					
-
 // 					return caClient.enroll({
 // 						enrollmentID: username,
 // 						enrollmentSecret: secret

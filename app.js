@@ -1,10 +1,14 @@
 global.cors = require('cors');
-
 var express = require('express');
-// console.log("cors is already running")
+
+require('./app-dlt-configs/config.js');
+
 var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+
 var bodyParser = require('body-parser');
 var multipart = require('connect-multiparty');
+
 global.crypto = require('crypto');
 global.multipartMiddleware = multipart();
 global.app = module.exports = express();
@@ -22,27 +26,19 @@ global.mongooseSchema = mongoose.Schema;
 global.configurationHolder = require('./configurations/DependencyInclude.js');
 global.domain = require('./configurations/DomainInclude.js');
 
-var log4js = require('log4js');
-var logger = log4js.getLogger('SampleWebApp');
-var session = require('express-session');
-var cookieParser = require('cookie-parser');
-var http = require('http');
-var util = require('util');
+// var log4js = require('log4js');
+// var logger = log4js.getLogger('SampleWebApp');
+// var session = require('express-session');
+// var cookieParser = require('cookie-parser');
+// var http = require('http');
 var expressJWT = require('express-jwt');
-var jwt = require('jsonwebtoken');
 var bearerToken = require('express-bearer-token');
 
-
 require('dotenv').config({ path: __dirname + '/.env' });
-
-require('./app-dlt-configs/config.js');
 
 var hfc = require('fabric-client');
 var host = process.env.HOST || hfc.getConfigSetting('host');
 var port = process.env.PORT || hfc.getConfigSetting('port');
-
-// spits out the configuratio holder
-// console.log("configurationHolder", configurationHolder.Bootstrap);
 
 app.use(errorHandler());
 app.use(function(req, res, next) {
@@ -59,66 +55,16 @@ app.use(bodyParser.urlencoded({
 	extended: false
 }));
 
-///////////////////////////////////////////////////////////////////////////////
-//////////////////////////////// SET CONFIGURATONS ////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-
-// set secret variable
-// app.set('secret', 'thisismysecret');
 app.set('secret', process.env.SESSION_SECRET);
 
 app.use(expressJWT({
-	// secret: 
 	secret: process.env.SESSION_SECRET
 }).unless({
-	path: ['/api/v1/users', '/api/v1/users/fetch/:uuid']
+	// path: ['/api/v1/users/fetch', '/api/v1/users']
+	path: ['/api/v1/users']	
 }));
 
 app.use(bearerToken());
-app.use(function(req, res, next) {
-	if (req.originalUrl.indexOf('/api/v1/users') >= 0) {
-		return next();
-	}
-
-	var token = req.token;
-	jwt.verify(token, app.get('secret'), function(err, decoded) {
-		if (err) {
-			res.send({
-				success: false,
-				message: 'Failed to authenticate token. Make sure to include the ' +
-					'token returned from /users call in the authorization header ' +
-					' as a Bearer token'
-			});
-			return;
-		} else {
-			// add the decoded user name and org name to the request object
-			// for the downstream code to use
-			req.username = decoded.username;
-			req.orgname = decoded.orgName;
-			logger.debug(util.format('Decoded from JWT token: username - %s, orgname - %s', decoded.userName, decoded.orgName));
-			return next();
-		}
-	});
-});
-
-///////////////////////////////////////////////////////////////////////////////
-//////////////////////////////// START SERVER /////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-
-// var server = http.createServer(app).listen(port, function() {});
-// logger.info('****************** SERVER STARTED ************************');
-// logger.info('**************  http://' + host + ':' + port +
-// 	'  ******************');
-// server.timeout = 240000;
-
-// function getErrorMessage(field) {
-// 	var response = {
-// 		success: false,
-// 		message: field + ' field is missing or Invalid in the request'
-// 	};
-// 	return response;
-// }
-
 
 global.Layers = require('./application-utilities/layers').Express;
 global.wiring = require('./configurations/UrlMapping');

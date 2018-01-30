@@ -1,6 +1,6 @@
 //add Roles in the system
 // var roles = ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPERADMIN', 'ROLE_SUPPORT']
-var roles = ['ROLE_USER', 'ROLE_SUPPORT'];
+var roles = ['ROLE_USER', 'ROLE_MERCHANT', 'ROLE_ADMIN', 'ROLE_SUPERADMIN'];
 
 // Add different accessLevels
 // var accessLevels = {
@@ -11,7 +11,10 @@ var roles = ['ROLE_USER', 'ROLE_SUPPORT'];
 //     'superadmin': ['ROLE_SUPERADMIN']
 // }
 var accessLevels = {
-    'user': ['ROLE_USER', 'ROLE_SUPPORT']
+    'user': ['ROLE_USER'],
+    'merchant' : [ 'ROLE_MERCHANT'],
+    'admin': ['ROLE_ADMIN'],
+    'superadmin': ['ROLE_SUPERADMIN']
 }
 
 var configVariables = function() {

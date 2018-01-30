@@ -143,7 +143,6 @@ module.exports = function() {
      * 
      */
     var queryInstalledChaincodes = function(req, res, callback) {
-        
         var peer = req.query.peer;
         var installType = req.query.type;
         var username = req.user.username;

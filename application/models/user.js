@@ -15,6 +15,12 @@ var UserSchema = new mongooseSchema({
         required: false,
         trim: true,
     },
+    roleOfUser : {
+        type: String,
+        default: 'ROLE_USER',
+        required: false,
+        trim: true,
+    },
     email: {
         type: String,
         default: '',
