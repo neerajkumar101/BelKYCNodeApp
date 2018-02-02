@@ -52,8 +52,8 @@ module.exports = function() {
     }
 
     var getUserPublicKeyByUuid = function (req, res, callback) {
-        var uuid = req.params.uuid;
-        Logger.debug('Fetch End point : /api/v1/publicKeys/fetch/:uuid');
+        var uuid = req.query.uuid;
+        Logger.debug('Fetch End point : /api/v1/users/fetch?uuid=');
         if (!uuid) {
             res.json(getErrorMessage('\'uuid\''));
             return;

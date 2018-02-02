@@ -8,6 +8,20 @@ var async = require('async');
 var jwt = require('jsonwebtoken');
 var util = require('util');
 
+var expressJWT = require('express-jwt');
+var bearerToken = require('express-bearer-token');
+
+module.exports.jwtSetup = function(app){
+    app.set('secret', process.env.SESSION_SECRET);
+    
+    app.use(expressJWT({
+        secret: process.env.SESSION_SECRET
+    }).unless({
+        path: ['/api/v1/users/fetch', '/api/v1/users']
+    }));
+    
+    app.use(bearerToken());
+}
 
 module.exports.AuthorizationMiddleware = (function() {
 
@@ -203,6 +217,5 @@ module.exports.AuthorizationMiddleware = (function() {
         verifyUserTokenAndRole: verifyUserTokenAndRole,
         authority: authority,
         lastActiveTime: lastActiveTime
-
     };
 })();

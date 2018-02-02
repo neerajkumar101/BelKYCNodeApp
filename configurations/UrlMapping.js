@@ -12,7 +12,7 @@ module.exports = function(app) {
 				json: views.jsonView
 			}
 		}],
-		"/api/v1/users/uuid/:uuid": [{
+		"/api/v1/users/fetch": [{
 			method: "GET",
 			action: app.controllers.userController.getUserPublicKeyByUuid,
 			middleware: [], 
@@ -32,7 +32,7 @@ module.exports = function(app) {
 		{
 			method: "POST",
 			action: app.controllers.channelController.createChannel,
-			middleware: [configurationHolder.security.verifyUserTokenAndRole('ROLE_USER')],
+			middleware: [], //configurationHolder.security.verifyUserTokenAndRole('ROLE_USER')
 			views: {
 				json: views.jsonView
 			}

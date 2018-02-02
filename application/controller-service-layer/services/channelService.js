@@ -69,6 +69,7 @@ channelService.prototype.createChannel = function(channelName, channelConfigPath
 			signatures: [signature],
 			name: channelName,
 			orderer: channel.getOrderers()[0],
+			// orderer: channel.getOrderers(),			
 			txId: client.newTransactionID()
 		};
 
@@ -207,8 +208,8 @@ channelService.prototype.joinChannel = function(channelName, peers, username, or
 		logger.error('Failed to join channel due to error: ' + err.stack ? err.stack :
 			err);
 		closeConnections();
-		throw new Error('Failed to join channel due to error: ' + err.stack ? err.stack :
-			err);
+		// throw new Error('Failed to join channel due to error: ' + err.stack ? err.stack :
+		// 	err);
 	});
 
 

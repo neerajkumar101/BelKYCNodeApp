@@ -31,6 +31,12 @@ for (let key in ORGS) {
 
 		let channel = client.newChannel(hfc.getConfigSetting('channelName'));
 		channel.addOrderer(newOrderer(client));
+		
+		// for(let ordr in ORGS.orderer){
+		// 	channel.addOrderer(newOrderer(client, ordr));
+			
+		// }
+		
 
 		clients[key] = client;
 		channels[key] = channel;
@@ -59,17 +65,33 @@ function setupPeers(channel, org, client) {
 	}
 }
 
-function newOrderer(client) {
-	var caRootsPath = ORGS.orderer.tls_cacerts;
+// function newOrderer(client, ordr) {
+function newOrderer(client) {	
+	// var caRootsPath = ORGS.orderer[ordr].tls_cacerts;
+	var caRootsPath = ORGS.orderer.tls_cacerts;	
 	// let data = fs.readFileSync(path.join(__dirname, caRootsPath));
 	let data = fs.readFileSync(caRootsPath);
 	
 	let caroots = Buffer.from(data).toString();
-	return client.newOrderer(ORGS.orderer.url, {
+	// return client.newOrderer(ORGS.orderer[ordr].url, {
+	return client.newOrderer(ORGS.orderer.url, {		
 		'pem': caroots,
-		'ssl-target-name-override': ORGS.orderer['server-hostname']
+		// 'ssl-target-name-override': ORGS.orderer[ordr]['server-hostname']
+		'ssl-target-name-override': ORGS.orderer['server-hostname']		
 	});
 }
+
+// function newOrderer(client) {
+// 	var caRootsPath = ORGS.orderer.tls_cacerts;
+// 	// let data = fs.readFileSync(path.join(__dirname, caRootsPath));
+// 	let data = fs.readFileSync(caRootsPath);
+	
+// 	let caroots = Buffer.from(data).toString();
+// 	return client.newOrderer(ORGS.orderer.url, {
+// 		'pem': caroots,
+// 		'ssl-target-name-override': ORGS.orderer['server-hostname']
+// 	});
+// }
 
 function readAllFiles(dir) {
 	var files = fs.readdirSync(dir);

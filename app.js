@@ -17,7 +17,7 @@ app.options('*', cors());
 app.use(cors());
 
 global.errorHandler = require('errorhandler');
-global.publicdir = __dirname;
+// global.publicdir = __dirname;
 global.async = require('async');
 global.path = require('path');
 global.router = express.Router();
@@ -26,14 +26,7 @@ global.mongooseSchema = mongoose.Schema;
 global.configurationHolder = require('./configurations/DependencyInclude.js');
 global.domain = require('./configurations/DomainInclude.js');
 
-// var log4js = require('log4js');
-// var logger = log4js.getLogger('SampleWebApp');
-// var session = require('express-session');
-// var cookieParser = require('cookie-parser');
-// var http = require('http');
-var expressJWT = require('express-jwt');
-var bearerToken = require('express-bearer-token');
-
+//now the env variables are available throughout the application without using any import
 require('dotenv').config({ path: __dirname + '/.env' });
 
 var hfc = require('fabric-client');
@@ -55,16 +48,8 @@ app.use(bodyParser.urlencoded({
 	extended: false
 }));
 
-app.set('secret', process.env.SESSION_SECRET);
-
-app.use(expressJWT({
-	secret: process.env.SESSION_SECRET
-}).unless({
-	// path: ['/api/v1/users/fetch', '/api/v1/users']
-	path: ['/api/v1/users']	
-}));
-
-app.use(bearerToken());
+var jwtSetup = require('./application-middlewares/AuthorizationMiddleware.js').jwtSetup;
+jwtSetup(app);
 
 global.Layers = require('./application-utilities/layers').Express;
 global.wiring = require('./configurations/UrlMapping');

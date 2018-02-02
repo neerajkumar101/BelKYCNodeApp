@@ -1,0 +1,28 @@
+#
+# Copyright IBM Corp All Rights Reserved
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+OrdererOrgs:
+  - Name: OrdererOrg
+    Domain: example.com
+    Specs:
+      - Hostname: orderer0
+      - Hostname: orderer1
+      - Hostname: orderer2
+
+PeerOrgs:
+  - Name: Org1MSP
+    Domain: org1.example.com
+    Template:
+      Count: 2
+    Users:
+      Count: 1
+
+  - Name: Org2MSP
+    Domain: org2.example.com
+    Template:
+      Count: 2
+    Users:
+      Count: 1
