@@ -1,8 +1,15 @@
+import { setTimeout } from 'timers';
+
 var util = require('util');
 var path = require('path');
 var hfc = require('fabric-client');
 
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
+setTimeout(() =>{
+	console.log('set timeout========================================================================');
+	console.log(process.env.NODE_ENV);
+	console.log('========================================================================');
+}, 1000);
 console.log('========================================================================');
 console.log(path.join(__dirname, '../.env'));
 console.log('========================================================================');
