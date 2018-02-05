@@ -31,6 +31,10 @@ else
 // hfc.addConfigFile(path.join(__dirname, 'app', file));
 // hfc.addConfigFile(path.join(__dirname, '/services/', file));
 hfc.addConfigFile(path.join(__dirname, '/', file));
+console.log('========================================================================');
+console.log(path.join(__dirname, '/', file));
+console.log('========================================================================');
+
 
 switch(process.env.NODE_ENV){
 	case 'development':
