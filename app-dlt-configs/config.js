@@ -3,6 +3,9 @@ var path = require('path');
 var hfc = require('fabric-client');
 
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
+console.log('========================================================================');
+console.log(path.join(__dirname, '../.env'));
+console.log('========================================================================');
 
 switch(process.env.NODE_ENV){
 	case 'development':
