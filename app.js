@@ -26,6 +26,10 @@ global.mongooseSchema = mongoose.Schema;
 global.configurationHolder = require('./configurations/DependencyInclude.js');
 global.domain = require('./configurations/DomainInclude.js');
 
+global.projectDir = __dirname;
+global.environmentDir = path.join(projectDir , '../');
+
+
 //now the env variables are available throughout the application without using any import
 require('dotenv').config({ path: __dirname + '/.env' });
 
@@ -45,11 +49,15 @@ app.use(function(req, res, next) {
 app.use(bodyParser.json());
 //support parsing of application/x-www-form-urlencoded post data
 app.use(bodyParser.urlencoded({
-	extended: false
+    extended: false
 }));
 
 var jwtSetup = require('./application-middlewares/AuthorizationMiddleware.js').jwtSetup;
 jwtSetup(app);
+
+// var envirnmentSetup = require('./application/controller-service-layer/services/helper.js').envirnmentSetup;
+// envirnmentSetup(process.env.NODE_ENV);
+
 
 global.Layers = require('./application-utilities/layers').Express;
 global.wiring = require('./configurations/UrlMapping');

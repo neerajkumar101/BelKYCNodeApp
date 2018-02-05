@@ -48,6 +48,22 @@ for (let key in ORGS) {
 	}
 }
 
+var readReplaceJSONObjectFieldValue = function(JSONFileDir, JSONFile, objectFieldKeyToChangeValue, changeValueWith, callback) {
+	fs.readFile( JSONFileDir + JSONFile, "utf8", (err, data) => {
+		if (err) calback(err, null);
+		var jsondata = JSON.parse(data);
+		console.log(jsondata);
+		if(jsondata[objectFieldKeyToChangeValue] != undefined){
+
+			jsondata[objectFieldKeyToChangeValue] = changeValueWith;
+			console.log(objectFieldKeyToChangeValue +', '+ jsondata);
+			callback(null, true);
+		} else{
+			callback(null, false);			
+		}
+	});
+}
+
 function setupPeers(channel, org, client) {
 	for (let key in ORGS[org].peers) {
 		// let data = fs.readFileSync(path.join(__dirname, ORGS[org].peers[key]['tls_cacerts']));
@@ -357,7 +373,7 @@ var getPublicKeyFromUsername = function(username, userOrg, callback){
 			});
 		}).then(function(identity){
 			new Promise(function(resolve, reject){
-				fs.readFile(path.join('/home/neeraj/.hfc-key-store/', identity + '-pub'), "utf-8", (err, data) => {
+				fs.readFile(path.join(process.env.HOME, '/.hfc-key-store/', identity + '-pub'), "utf-8", (err, data) => {
 					if (err) throw err;
 					// var jsondata = JSON.parse(data);
 					console.log(data);
@@ -452,3 +468,4 @@ exports.getRegisteredUsers = getRegisteredUsers;
 exports.getOrgAdmin = getOrgAdmin;
 exports.getUserPublicKeyByUuid = getUserPublicKeyByUuid;
 exports.generateUserToken = generateUserToken;
+// exports.envirnmentSetup = envirnmentSetup;

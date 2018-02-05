@@ -1,0 +1,15 @@
+{
+   "host":"localhost",
+   "port":"4000",
+   "jwt_expiretime": "36000",
+   "channelName":"mychannel",
+   "CC_SRC_PATH":"/home/neeraj/Documents/Belrium-KYC-Layer-App/Fabric-1.1.0-preview-Network/artifacts",
+   "keyValueStore":"/tmp/fabric-client-kvs",
+   "eventWaitTime":"30000",
+   "admins":[
+      {
+         "username":"admin",
+         "secret":"adminpw"
+      }
+   ]
+}

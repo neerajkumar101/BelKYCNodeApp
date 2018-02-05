@@ -36,8 +36,8 @@
     },
     "devDependencies": {},
     "scripts": {
-        "test": "node server.js",
-        "start": "node server.js"
+        "test": "node app.js",
+        "start": "node app.js"
     },
     "keywords": [
         "node"
