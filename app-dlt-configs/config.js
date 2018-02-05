@@ -32,6 +32,9 @@ else
 // hfc.addConfigFile(path.join(__dirname, '/services/', file));
 hfc.addConfigFile(path.join(__dirname, '/', file));
 console.log('========================================================================');
+console.log(process.env.NODE_ENV);
+console.log('========================================================================');
+console.log('========================================================================');
 console.log(path.join(__dirname, '/', file));
 console.log('========================================================================');
 
