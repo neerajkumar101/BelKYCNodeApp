@@ -92,7 +92,7 @@ services:
         image: hyperledger/fabric-ca:x86_64-1.1.0-preview
         environment:
             - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-            - FABRIC_CA_SERVER_CA_NAME=ca-org1
+            - FABRIC_CA_SERVER_CA_NAME=ca.org1.example.com
             - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca/ca.org1.example.com-cert.pem
             - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca/CA1_PRIVATE_KEY
 
@@ -101,11 +101,12 @@ services:
             - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/tlsca/TLS1_PRIVATE_KEY
         ports:
             - "7054:7054"
-        command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca/ca.org1.example.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca/CA1_PRIVATE_KEY -b admin:adminpw ${ORG_HYPERLEDGER_FABRIC_CA_TLS} --tls.certfile /etc/hyperledger/fabric-ca-server-config/tlsca/tlsca.org1.example.com-cert.pem --tls.keyfile /etc/hyperledger/fabric-ca-server-config/tlsca/TLS1_PRIVATE_KEY -d'
+        command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca/ca.org1.example.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca/CA1_PRIVATE_KEY -b admin:adminpw -d ${ORG_HYPERLEDGER_FABRIC_CA_TLS} --tls.certfile /etc/hyperledger/fabric-ca-server-config/tlsca/tlsca.org1.example.com-cert.pem --tls.keyfile /etc/hyperledger/fabric-ca-server-config/tlsca/TLS1_PRIVATE_KEY -d'
+        # command: sh -c 'fabric-ca-server start -b admin:adminpw -d'        
         
         volumes:
             - ../../artifacts/crypto-config/peerOrganizations/org1.example.com/ca/:/etc/hyperledger/fabric-ca-server-config/ca/
-            - ../../artifacts/crypto-config/peerOrganizations/org1.example.com/tlsca/:/etc/hyperledger/fabric-ca-server-config/tlsca/           
+            - ../../artifacts/crypto-config/peerOrganizations/org1.example.com/tlsca/:/etc/hyperledger/fabric-ca-server-config/tlsca/
         container_name: ca.org1.example.com
         networks:
             - privnet
@@ -114,7 +115,7 @@ services:
         image: hyperledger/fabric-ca:x86_64-1.1.0-preview
         environment:
             - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-            - FABRIC_CA_SERVER_CA_NAME=ca-org2
+            - FABRIC_CA_SERVER_CA_NAME=ca.org2.example.com
             - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca/ca.org2.example.com-cert.pem
             - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ca/CA2_PRIVATE_KEY
 
@@ -123,10 +124,11 @@ services:
             - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/tlsca/TLS2_PRIVATE_KEY
         ports:
             - "8054:7054"
-        command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca/ca.org2.example.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca/CA2_PRIVATE_KEY -b admin:adminpw ${ORG_HYPERLEDGER_FABRIC_CA_TLS} --tls.certfile /etc/hyperledger/fabric-ca-server-config/tlsca/tlsca.org2.example.com-cert.pem --tls.keyfile /etc/hyperledger/fabric-ca-server-config/tlsca/TLS2_PRIVATE_KEY -d'
+        command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca/ca.org2.example.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/ca/CA2_PRIVATE_KEY -b admin:adminpw -d ${ORG_HYPERLEDGER_FABRIC_CA_TLS} --tls.certfile /etc/hyperledger/fabric-ca-server-config/tlsca/tlsca.org2.example.com-cert.pem --tls.keyfile /etc/hyperledger/fabric-ca-server-config/tlsca/TLS2_PRIVATE_KEY -d'
+        # command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
         volumes:
             - ../../artifacts/crypto-config/peerOrganizations/org2.example.com/ca/:/etc/hyperledger/fabric-ca-server-config/ca/
-            - ../../artifacts/crypto-config/peerOrganizations/org2.example.com/tlsca/:/etc/hyperledger/fabric-ca-server-config/tlsca/           
+            - ../../artifacts/crypto-config/peerOrganizations/org2.example.com/tlsca/:/etc/hyperledger/fabric-ca-server-config/tlsca/  
         container_name: ca.org2.example.com
         networks:
             - privnet
@@ -145,8 +147,8 @@ services:
             - ORDERER_KAFKA_VERBOSE=true
             - ORDERER_GENERAL_GENESISPROFILE=TwoOrgsGenesisKafka
         volumes:
-            - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
-            - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/fabric/orderer/msp
+            - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/fabric/orderer/tls
         depends_on:
             - kafka0
             - kafka1
@@ -168,10 +170,10 @@ services:
             - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
             - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
             - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=TwoOrgsGenesisKafka
+            - ORDERER_GENERAL_GENESISPROFILE=TwoOrgsGenesisKafka         
         volumes:
-            - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/msp:/var/hyperledger/msp
-            - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/tls:/var/hyperledger/tls
+            - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/msp:/var/hyperledger/fabric/orderer/msp
+            - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/tls:/var/hyperledger/fabric/orderer/tls
         depends_on:
             - kafka0
             - kafka1
@@ -187,17 +189,17 @@ services:
             service: orderer
         container_name: orderer2.example.com
         environment:
+        
             - ORDERER_HOST=orderer2.example.com
             - CONFIGTX_ORDERER_ORDERERTYPE=kafka
             - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092]
             - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
             - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
             - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=TwoOrgsGenesisKafka
+            - ORDERER_GENERAL_GENESISPROFILE=TwoOrgsGenesisKafka          
         volumes:
-            - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/msp:/var/hyperledger/msp
-            - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls:/var/hyperledger/tls
-
+            - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/msp:/var/hyperledger/fabric/orderer/msp
+            - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls:/var/hyperledger/fabric/orderer/tls
         depends_on:
             - kafka0
             - kafka1
@@ -275,19 +277,23 @@ services:
         environment:
             - CORE_PEER_CHAINCODELISTENADDRESS=peer0.org1.example.com:7052
             - CORE_PEER_ID=peer0.org1.example.com
+
+            - CORE_PEER_ENDORSER_ENABLED=true
+            
             - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
-            - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
             - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.example.com:7051
             - CORE_PEER_GOSSIP_ORGLEADER=${CORE_PEER_GOSSIP_ORGLEADER_PEER0_ORG1}
             - CORE_PEER_GOSSIP_USELEADERELECTION=${CORE_PEER_GOSSIP_USELEADERELECTION_PEER0_ORG1}
+
             - CORE_PEER_LOCALMSPID=Org1MSP
             - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
             - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb01:5984
             - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=couchdb01user
             - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=nothingcomplex@123
         volumes:
-            - ../../artifacts/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp:/var/hyperledger/msp
-            - ../../artifacts/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls:/var/hyperledger/tls
+            - ../../artifacts/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ../../artifacts/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls:/etc/hyperledger/fabric/tls
         depends_on:
             - orderer0.example.com
             - orderer1.example.com
@@ -307,18 +313,23 @@ services:
         environment:
             - CORE_PEER_CHAINCODELISTENADDRESS=peer1.org1.example.com:7052
             - CORE_PEER_ID=peer1.org1.example.com
+
+            - CORE_PEER_ENDORSER_ENABLED=true
+
             - CORE_PEER_ADDRESS=peer1.org1.example.com:7051
             - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org1.example.com:7051            
             - CORE_PEER_GOSSIP_ORGLEADER=${CORE_PEER_GOSSIP_ORGLEADER_PEER1_ORG1}
             - CORE_PEER_GOSSIP_USELEADERELECTION=${CORE_PEER_GOSSIP_USELEADERELECTION_PEER1_ORG1}
+
             - CORE_PEER_LOCALMSPID=Org1MSP
             - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
             - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb11:5984
             - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=couchdb11user
             - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=nothingcomplex@123
         volumes:
-            - ../../artifacts/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp:/var/hyperledger/msp
-            - ../../artifacts/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls:/var/hyperledger/tls
+            - ../../artifacts/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp:/etc/hyperledger/fabric/msp
+            - ../../artifacts/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls:/etc/hyperledger/fabric/tls
         depends_on:
             - orderer0.example.com
             - orderer1.example.com
@@ -339,19 +350,23 @@ services:
         environment:
             - CORE_PEER_CHAINCODELISTENADDRESS=peer0.org2.example.com:7052
             - CORE_PEER_ID=peer0.org2.example.com
+
+            - CORE_PEER_ENDORSER_ENABLED=true
+
             - CORE_PEER_ADDRESS=peer0.org2.example.com:7051
-            - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org2.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.example.com:7051
             - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.example.com:7051
             - CORE_PEER_GOSSIP_ORGLEADER=${CORE_PEER_GOSSIP_ORGLEADER_PEER0_ORG2}
             - CORE_PEER_GOSSIP_USELEADERELECTION=${CORE_PEER_GOSSIP_USELEADERELECTION_PEER0_ORG2}
+
             - CORE_PEER_LOCALMSPID=Org2MSP
             - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
             - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb02:5984
             - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=couchdb02user
             - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=nothingcomplex@123
         volumes:
-            - ../../artifacts/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp:/var/hyperledger/msp
-            - ../../artifacts/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls:/var/hyperledger/tls
+            - ../../artifacts/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp:/etc/hyperledger/fabric/msp
+            - ../../artifacts/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls:/etc/hyperledger/fabric/tls
         depends_on:
             - orderer0.example.com
             - orderer1.example.com
@@ -371,18 +386,24 @@ services:
         environment:
             - CORE_PEER_CHAINCODELISTENADDRESS=peer1.org2.example.com:7052
             - CORE_PEER_ID=peer1.org2.example.com
+
+            - CORE_PEER_ENDORSER_ENABLED=true
+
             - CORE_PEER_ADDRESS=peer1.org2.example.com:7051
-            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.example.com:7051
+            # - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org2.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.example.com:7051            
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org2.example.com:7051            
             - CORE_PEER_GOSSIP_ORGLEADER=${CORE_PEER_GOSSIP_ORGLEADER_PEER1_ORG2}
             - CORE_PEER_GOSSIP_USELEADERELECTION=${CORE_PEER_GOSSIP_USELEADERELECTION_PEER1_ORG2}
+ 
             - CORE_PEER_LOCALMSPID=Org2MSP
             - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
             - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb12:5984
             - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=couchdb12user
             - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=nothingcomplex@123
         volumes:
-            - ../../artifacts/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp:/var/hyperledger/msp
-            - ../../artifacts/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls:/var/hyperledger/tls
+            - ../../artifacts/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp:/etc/hyperledger/fabric/msp
+            - ../../artifacts/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls:/etc/hyperledger/fabric/tls
         depends_on:
             - orderer0.example.com
             - orderer1.example.com
@@ -405,20 +426,22 @@ services:
             - CORE_LOGGING_LEVEL=DEBUG
             # TLS settings
             - CORE_PEER_TLS_ENABLED=${CORE_PEER_TLS_ENABLED}
-            - CORE_PEER_TLS_CERT_FILE=/var/hyperledger/tls/server.crt
-            - CORE_PEER_TLS_KEY_FILE=/var/hyperledger/tls/server.key
-            - CORE_PEER_TLS_ROOTCERT_FILE=/var/hyperledger/tls/ca.crt
+            - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+            - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+            - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
         working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
         command: /bin/bash -c 'sleep 6000000000000000000'
         volumes:
             - /var/run/:/host/var/run/
             - ../../fabric/examples/chaincode:/opt/gopath/src/github.com/hyperledger/fabric/examples/chaincode
             - ../../chaincodes:/opt/gopath/src/github.com/hyperledger/fabric-test/chaincodes
+
             - ../../fabric/common:/opt/gopath/src/github.com/hyperledger/fabric/common
             - ../../fabric/vendor:/opt/gopath/src/github.com/hyperledger/fabric/vendor
-            - ../../artifacts:/var/hyperledger/configs
-            - ../../artifacts/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls:/var/hyperledger/tls
+
+            - ../../artifacts/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls:/etc/hyperledger/fabric/tls
             - ../../artifacts/channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+            - ../../artifacts/crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
         ports:
             - '9092'
         depends_on:

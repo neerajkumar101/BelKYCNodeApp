@@ -29,19 +29,18 @@ services:
     orderer:
         image: hyperledger/fabric-orderer:x86_64-1.1.0-preview
         environment:
-            - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${CORE_PEER_NETWORKID}_behave
-            # - ORDERER_HOME=/var/hyperledger/orderer
-            - ORDERER_HOME=/var/hyperledger/            
+            - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${CORE_PEER_NETWORKID}_privnet
+            - ORDERER_HOME=/var/hyperledger/fabric/orderer
             - ORDERER_GENERAL_LOGLEVEL=debug
-            - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/msp
+
+            - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/fabric/orderer/msp
             - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+
             - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
             - ORDERER_GENERAL_LISTENPORT=7050
             - ORDERER_GENERAL_LEDGERTYPE=ram
             - ORDERER_GENERAL_GENESISMETHOD=file
-            # - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis-kafka.block
-            - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer.genesis-kafka.block          
-
+            - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/fabric/orderer/orderer.genesis-kafka.block
             - CONFIGTX_ORDERER_ORDERERTYPE=kafka
 
             - CONFIGTX_ORDERER_BATCHSIZE_MAXMESSAGECOUNT=${CONFIGTX_ORDERER_BATCHSIZE_MAXMESSAGECOUNT}
@@ -49,17 +48,12 @@ services:
             - CONFIGTX_ORDERER_ADDRESSES=[127.0.0.1:7050]
             # TLS settings
             - ORDERER_GENERAL_TLS_ENABLED=${ORDERER_GENERAL_TLS_ENABLED}
-            - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/tls/server.key
-            - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/tls/server.crt
-            - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/tls/ca.crt]
+            - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/fabric/orderer/tls/server.key            
+            - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/fabric/orderer/tls/server.crt
+            - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/fabric/orderer/tls/ca.crt]
         volumes: 
-            - ../../artifacts/crypto-config:/var/hyperledger/configs
-            # - ../../artifacts/channel-artifacts/genesis-kafka.block:/var/hyperledger/orderer/orderer.genesis-kafka.block
-            - ../../artifacts/channel-artifacts/genesis-kafka.block:/var/hyperledger/orderer.genesis-kafka.block            
-            # - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/var/hyperledger/orderer/msp
-            # - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/:/var/hyperledger/orderer/tls
-            - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/var/hyperledger/msp
-            - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/:/var/hyperledger/tls
+            - ../../artifacts/channel-artifacts/genesis-kafka.block:/var/hyperledger/fabric/orderer/orderer.genesis-kafka.block
+            # - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers:/var/hyperledger/fabric/orderer/crypto
         working_dir: /opt/gopath/src/github.com/hyperledger/fabric/orderer
         command: orderer
         ports:
@@ -73,12 +67,13 @@ services:
         environment:
             - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
             - CORE_PEER_NETWORKID=${CORE_PEER_NETWORKID}
-            - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${CORE_PEER_NETWORKID}_behave
+            - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${CORE_PEER_NETWORKID}_privnet
             - CORE_PEER_ADDRESSAUTODETECT=true
             - CORE_PEER_GOSSIP_ORGLEADER=false
             - CORE_PEER_GOSSIP_USELEADERELECTION=true
             - CORE_PEER_PROFILE_ENABLED=true
-            - CORE_PEER_MSPCONFIGPATH=/var/hyperledger/msp
+            
+            - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp
 
             - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
 
@@ -87,10 +82,10 @@ services:
             # TLS settings
             - CORE_PEER_TLS_ENABLED=${CORE_PEER_TLS_ENABLED}
             - CORE_PEER_TLS_CLIENTAUTHREQUIRED=${CORE_PEER_TLS_CLIENTAUTHREQUIRED}
-            - CORE_PEER_TLS_CLIENTROOTCAS_FILES=[/var/hyperledger/tls/ca.crt]
-            - CORE_PEER_TLS_CERT_FILE=/var/hyperledger/tls/server.crt
-            - CORE_PEER_TLS_KEY_FILE=/var/hyperledger/tls/server.key
-            - CORE_PEER_TLS_ROOTCERT_FILE=/var/hyperledger/tls/ca.crt
+            - CORE_PEER_TLS_CLIENTROOTCAS_FILES=[/etc/hyperledger/fabric/tls/ca.crt]
+            - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+            - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+            - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
         volumes:
             - /var/run/:/host/var/run/
             - ../../fabric/common:/opt/gopath/src/github.com/hyperledger/fabric/common

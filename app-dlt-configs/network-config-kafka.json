@@ -1,9 +1,33 @@
 {
 	"network-config": { 
-		"orderer": {
-			"url": "grpcs://localhost:7050",
-			"server-hostname": "orderer0.example.com",
-			"tls_cacerts": "/home/neeraj/Documents/Belrium-KYC-Layer-App/Bel-KYC-Layer-App-KafkaBasedNetwork/artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls/ca.crt"
+		"orderer" : {
+			"orderer0": {
+				"url": "grpcs://localhost:7050",
+				"server-hostname": "orderer0.example.com",
+				"tls_cacerts": "/home/neeraj/Documents/Belrium-KYC-Layer-App/Bel-KYC-Layer-App-KafkaBasedNetwork/artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls/ca.crt",
+				"admin": {
+					"key": "/home/neeraj/Documents/Belrium-KYC-Layer-App/Bel-KYC-Layer-App-KafkaBasedNetwork/artifacts/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/keystore",
+					"cert": "/home/neeraj/Documents/Belrium-KYC-Layer-App/Bel-KYC-Layer-App-KafkaBasedNetwork/artifacts/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/signcerts"
+				}
+			},
+			"orderer1": {
+				"url": "grpcs://localhost:8050",
+				"server-hostname": "orderer1.example.com",
+				"tls_cacerts": "/home/neeraj/Documents/Belrium-KYC-Layer-App/Bel-KYC-Layer-App-KafkaBasedNetwork/artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/tls/ca.crt",
+				"admin": {
+					"key": "/home/neeraj/Documents/Belrium-KYC-Layer-App/Bel-KYC-Layer-App-KafkaBasedNetwork/artifacts/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/keystore",
+					"cert": "/home/neeraj/Documents/Belrium-KYC-Layer-App/Bel-KYC-Layer-App-KafkaBasedNetwork/artifacts/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/signcerts"
+				}
+			},
+			"orderer2": {
+				"url": "grpcs://localhost:9050",
+				"server-hostname": "orderer2.example.com",
+				"tls_cacerts": "/home/neeraj/Documents/Belrium-KYC-Layer-App/Bel-KYC-Layer-App-KafkaBasedNetwork/artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/ca.crt",
+				"admin": {
+					"key": "/home/neeraj/Documents/Belrium-KYC-Layer-App/Bel-KYC-Layer-App-KafkaBasedNetwork/artifacts/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/keystore",
+					"cert": "/home/neeraj/Documents/Belrium-KYC-Layer-App/Bel-KYC-Layer-App-KafkaBasedNetwork/artifacts/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/signcerts"
+				}
+			}
 		},
 		"org1": {
 			"name": "peerOrg1",
