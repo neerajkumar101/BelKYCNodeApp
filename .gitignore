@@ -7,7 +7,7 @@ node_modules
 /Fabric-1.1.0-preview-Network/artifacts/channel/crypto-config
 
 package-lock.json
-.env
+#.env
 
 # exception to the rule
 # !server/uploads/.gitkeep 
