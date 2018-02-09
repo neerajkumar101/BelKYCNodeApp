@@ -2,7 +2,6 @@ node_modules
 .idea
 
 /application/controller-service-layer/artifacts.1
-/SampleKafkaNetwork/artifacts/channel/crypto-config
 /Bel-KYC-Layer-App-KafkaBasedNetwork/artifacts/channel-artifacts
 /Bel-KYC-Layer-App-KafkaBasedNetwork/artifacts/crypto-config
 /Fabric-1.1.0-preview-Network/artifacts/channel/crypto-config
