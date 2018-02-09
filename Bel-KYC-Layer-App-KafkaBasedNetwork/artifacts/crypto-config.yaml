@@ -15,14 +15,22 @@ OrdererOrgs:
 PeerOrgs:
   - Name: Org1MSP
     Domain: org1.example.com
+    CA:
+       Hostname: ca # implicitly ca.org1.example.com
     Template:
       Count: 2
+      SANS:
+        - "localhost"
     Users:
       Count: 1
 
   - Name: Org2MSP
     Domain: org2.example.com
+    CA:
+       Hostname: ca # implicitly ca.org1.example.com
     Template:
       Count: 2
+      SANS:
+        - "localhost"
     Users:
       Count: 1

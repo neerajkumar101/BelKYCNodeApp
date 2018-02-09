@@ -19,11 +19,21 @@ Profiles:
     TwoOrgsGenesisKafka:
         Orderer:
             <<: *OrdererDefaults
+            OrdererType: kafka
+            Addresses:
+                - orderer0.example.com:7050
+                - orderer1.example.com:7050
+                - orderer2.example.com:7050
             Organizations:
                 - *OrdererOrg
+        # Application:
+        #     <<: *ApplicationDefaults
+        #     Organizations:
+        #         - *OrdererOrg
         Consortiums:
             SampleConsortium:
                 Organizations:
+                    # - *OrdererOrg
                     - *Org1
                     - *Org2
 
@@ -44,6 +54,24 @@ Profiles:
 #
 ################################################################################
 Organizations:
+
+    # - &Org1
+    #     Name: Organization1
+    #     ID: Org1
+    #     MSPDir: ./crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp
+    #     AdminPrincipal: Role.ADMIN
+    #     AnchorPeers:
+    #         - Host: peer0.org1.example.com
+    #           Port: 7051
+
+    # - &Org2
+    #     Name: Organization2
+    #     ID: Org2
+    #     MSPDir: ./crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp
+    #     AdminPrincipal: Role.MEMBER
+    #     AnchorPeers:
+    #         - Host: peer0.org2.example.com
+    #           Port: 7051
 
     - &OrdererOrg
         Name: OrdererOrg

@@ -140,12 +140,6 @@ services:
         container_name: orderer0.example.com
         environment:
             - ORDERER_HOST=orderer0.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=TwoOrgsGenesisKafka
         volumes:
             - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/fabric/orderer/msp
             - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/fabric/orderer/tls
@@ -164,13 +158,7 @@ services:
             service: orderer
         container_name: orderer1.example.com
         environment:
-            - ORDERER_HOST=orderer1.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=TwoOrgsGenesisKafka         
+            - ORDERER_HOST=orderer1.example.com        
         volumes:
             - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/msp:/var/hyperledger/fabric/orderer/msp
             - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/tls:/var/hyperledger/fabric/orderer/tls
@@ -190,13 +178,7 @@ services:
         container_name: orderer2.example.com
         environment:
         
-            - ORDERER_HOST=orderer2.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=TwoOrgsGenesisKafka          
+            - ORDERER_HOST=orderer2.example.com        
         volumes:
             - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/msp:/var/hyperledger/fabric/orderer/msp
             - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls:/var/hyperledger/fabric/orderer/tls

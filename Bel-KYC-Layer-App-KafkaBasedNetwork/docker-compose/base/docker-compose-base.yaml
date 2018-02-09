@@ -40,8 +40,14 @@ services:
             - ORDERER_GENERAL_LISTENPORT=7050
             - ORDERER_GENERAL_LEDGERTYPE=ram
             - ORDERER_GENERAL_GENESISMETHOD=file
-            - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/fabric/orderer/orderer.genesis-kafka.block
+            - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/fabric/orderer/orderer.genesis.block
             - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=TwoOrgsGenesisKafka  
 
             - CONFIGTX_ORDERER_BATCHSIZE_MAXMESSAGECOUNT=${CONFIGTX_ORDERER_BATCHSIZE_MAXMESSAGECOUNT}
             - CONFIGTX_ORDERER_BATCHTIMEOUT=${CONFIGTX_ORDERER_BATCHTIMEOUT}
@@ -52,8 +58,8 @@ services:
             - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/fabric/orderer/tls/server.crt
             - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/fabric/orderer/tls/ca.crt]
         volumes: 
-            - ../../artifacts/channel-artifacts/genesis-kafka.block:/var/hyperledger/fabric/orderer/orderer.genesis-kafka.block
-            # - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers:/var/hyperledger/fabric/orderer/crypto
+            - ../../artifacts/channel-artifacts/genesis.block:/var/hyperledger/fabric/orderer/orderer.genesis.block
+            - ../../artifacts/crypto-config/ordererOrganizations/example.com/orderers:/var/hyperledger/fabric/orderer/crypto
         working_dir: /opt/gopath/src/github.com/hyperledger/fabric/orderer
         command: orderer
         ports:
