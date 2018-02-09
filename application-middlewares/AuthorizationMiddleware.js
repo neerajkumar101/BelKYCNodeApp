@@ -57,8 +57,10 @@ module.exports.AuthorizationMiddleware = (function() {
         }
     }
 
-    var verifyUserTokenAndRole = function (accessLevel) {
-        // configurationHolder.config.accessLevels[accessLevel]
+    var verifyUserTokenAndRole = function (reqAccessLevel) {
+        
+        var accessLevel = configurationHolder.config.accessLevels[reqAccessLevel];
+
         return function(req, res, next){
             if (req.originalUrl.indexOf('/api/v1/users') >= 0) {
                 return next();
@@ -85,9 +87,12 @@ module.exports.AuthorizationMiddleware = (function() {
                         Logger.debug(util.format('orgName - %s', decoded.orgName));
                         return next();
                     } else {
-                        req.error = new Error("Sorry!! You are not authorized to perform this action.")
-                        req.authorized = false;
-                        return next();
+
+                        res.statusCode = 401;
+                        var err  = {
+                            message : "Sorry!! You are not authorized to perform this action."
+                        }
+                        res.send(err);
                     }
 
                 }

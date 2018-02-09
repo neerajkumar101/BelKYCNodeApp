@@ -16,7 +16,7 @@
 var util = require('util');
 var fs = require('fs');
 var path = require('path');
-var config = require('../../../app-dlt-configs/config.json');
+// var config = require('../../../app-dlt-configs/config.json');
 var helper = require('./helper.js');
 var BaseService = require('./BaseService');
 // var userService = require('./userService');
@@ -158,7 +158,8 @@ channelService.prototype.joinChannel = function(channelName, peers, username, or
 		var eventPromises = [];
 		eventhubs.forEach((eh) => {
 			let txPromise = new Promise((resolve, reject) => {
-				let handle = setTimeout(reject, parseInt(config.eventWaitTime));
+				// let handle = setTimeout(reject, parseInt(config.eventWaitTime));
+				let handle = setTimeout(reject, parseInt(global.config.eventWaitTime));				
 				eh.registerBlockEvent((block) => {
 					clearTimeout(handle);
 					// in real-world situations, a peer may have more than one channels so

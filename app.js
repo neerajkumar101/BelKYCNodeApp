@@ -1,7 +1,26 @@
 global.cors = require('cors');
 var express = require('express');
 
+//Blockchain configs
 require('./app-dlt-configs/config.js');
+
+switch(process.env.NODE_ENV){
+    case 'development':
+    global.config = require('./app-dlt-configs/config-kafka.json');
+	break;
+
+    case 'staging':
+    global.config = require('./app-dlt-configs/config-kafka-staging.json');    
+	break;
+
+    case 'production':
+    global.config = require('./app-dlt-configs/config-kafka-production.json');    
+	break;
+	
+    default:
+    global.config = require('./app-dlt-configs/config-kafka.json');    
+	break;
+}
 
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
