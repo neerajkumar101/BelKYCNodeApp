@@ -157,8 +157,8 @@ services:
     container_name: couchdb0
     image: hyperledger/fabric-couchdb:x86_64-1.1.0-preview
     environment:
-      - COUCHDB_USER=
-      - COUCHDB_PASSWORD=
+      - COUCHDB_USER=peer0org1
+      - COUCHDB_PASSWORD=nothingcomples@123
     ports:
       - "7984:5984"
 
@@ -166,8 +166,8 @@ services:
     container_name: couchdb1
     image: hyperledger/fabric-couchdb:x86_64-1.1.0-preview
     environment:
-      - COUCHDB_USER=
-      - COUCHDB_PASSWORD=
+      - COUCHDB_USER=peer1org1
+      - COUCHDB_PASSWORD=nothingcomples@123
     ports:
       - "8984:5984"
 
@@ -175,8 +175,8 @@ services:
     container_name: couchdb2
     image: hyperledger/fabric-couchdb:x86_64-1.1.0-preview
     environment:
-      - COUCHDB_USER=
-      - COUCHDB_PASSWORD=
+      - COUCHDB_USER=peer0org2
+      - COUCHDB_PASSWORD=nothingcomples@123
     ports:
       - "9984:5984"
 
@@ -184,8 +184,8 @@ services:
     container_name: couchdb3
     image: hyperledger/fabric-couchdb:x86_64-1.1.0-preview
     environment:
-      - COUCHDB_USER=
-      - COUCHDB_PASSWORD=
+      - COUCHDB_USER=peer1org2
+      - COUCHDB_PASSWORD=nothingcomples@123
     ports:
       - "10984:5984"
 
@@ -201,8 +201,8 @@ services:
 
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb0:5984
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=peer0org1
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=nothingcomples@123
     ports:
       - 7051:7051
       - 7053:7053
@@ -226,8 +226,8 @@ services:
 
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb1:5984
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=peer1org1
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=nothingcomples@123
     ports:
       - 7056:7051
       - 7058:7053
@@ -251,8 +251,8 @@ services:
 
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb2:5984
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=peer0org2
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=nothingcomples@123
     ports:
       - 8051:7051
       - 8053:7053
@@ -276,8 +276,8 @@ services:
 
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb3:5984
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=peer1org2
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=nothingcomples@123
     ports:
       - 8056:7051
       - 8058:7053
